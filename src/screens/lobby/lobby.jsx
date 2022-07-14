@@ -43,7 +43,11 @@ function Lobby() {
       <div className="input-screen">
         {currentPlayer ? (
           <>
-            <Header type="game-lobby" timer={gameData.timer} />
+            <Header
+              className="suggest-character"
+              type="game-lobby"
+              timer={gameData.timer}
+            />
             <div className="input-screen__player">
               <div className="input-screen__player-card-wrapper">
                 {currentPlayer && (

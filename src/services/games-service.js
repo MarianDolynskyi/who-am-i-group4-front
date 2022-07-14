@@ -96,6 +96,14 @@ function leaveGame(player, id) {
   });
 }
 
+function getHistory(player, id) {
+  return axios({
+    method: 'get',
+    url: `/api/v1/games/${id}/history`,
+    headers: { 'X-Player': player },
+  });
+}
+
 export {
   findGameById,
   findAvailableGames,
@@ -107,4 +115,5 @@ export {
   answerQuestion,
   getAllPlayersCount,
   leaveGame,
+  getHistory,
 };

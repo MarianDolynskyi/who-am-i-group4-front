@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -9,7 +10,7 @@ import {
   WAITING_FOR_PLAYERS,
 } from '../constants/constants';
 import GameDataContext from '../contexts/game-data-context';
-import { findGameById } from '../services/games-service';
+import { findGameById, getHistory } from '../services/games-service';
 
 export default function useGameData() {
   const { gameData, setGameData, resetData, playerId } =
@@ -23,9 +24,20 @@ export default function useGameData() {
 
       if (gameId && userId) {
         try {
+          const { data } = await getHistory(userId, gameId);
+          setGameData((state) => ({ ...state, history: data }));
+        } catch (error) {
+          //to do: handle errors
+        }
+        try {
           const { data } = await findGameById(userId, gameId);
 
-          if (data.players.length) setGameData(data);
+          if (data.players.length)
+            setGameData((state) => ({
+              ...state,
+              status: data.status,
+              players: data.players,
+            }));
         } catch (error) {
           if (error.response.status === 404) {
             resetData();

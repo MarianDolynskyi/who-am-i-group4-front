@@ -15,6 +15,7 @@ import {
 } from '../../constants/constants';
 import { useContext } from 'react';
 import GameDataContext from '../../contexts/game-data-context';
+import usePlayers from '../../hooks/usePlayers';
 
 function HistoryContainer({ mode, currentPlayer }) {
   const { gameData, playerId } = useContext(GameDataContext);
@@ -22,6 +23,8 @@ function HistoryContainer({ mode, currentPlayer }) {
   const [currentQuestion, setCurrentQuestion] = useState('');
   const [disabled, setDisabled] = useState(false);
   const bottomElement = useRef(null);
+
+  const { players } = usePlayers();
 
   useEffect(() => {
     const listBottom = bottomElement.current;
@@ -36,7 +39,6 @@ function HistoryContainer({ mode, currentPlayer }) {
 
   const sendQuestionHandler = async () => {
     if (currentQuestion !== '') {
-      history.push({ user: currentPlayer, question: currentQuestion });
       try {
         await askQuestion(playerId, gameData.id, currentQuestion);
         setCurrentQuestion('');
@@ -58,11 +60,32 @@ function HistoryContainer({ mode, currentPlayer }) {
     }
   };
 
+  const history = gameData.history.map((item) => {
+    const user = players.find((player) => player.player.id === item.PlayerId);
+    const avatar = user && user.avatar;
+    const answers = item.Answers.map((answer) => {
+      const player = players.find(
+        (player) => player.player.id === answer.PlayerId
+      );
+      const avatar = player && player.avatar;
+      const status = answer && answer.Answer;
+
+      return { avatar, status };
+    });
+
+    return { avatar, answers, question: item.Question };
+  });
+
   return (
     <div className="history">
       <div className="history_list">
         {history.map((item, index) => (
-          <HistoryItem users={users} question={item} key={index} />
+          <HistoryItem
+            key={index}
+            avatar={item.avatar}
+            question={item.question}
+            answers={item.answers}
+          />
         ))}
         <div className="list_scroll_bottom" ref={bottomElement}></div>
       </div>
