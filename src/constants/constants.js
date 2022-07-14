@@ -16,6 +16,7 @@ const NOT_SURE = 'NOT_SURE';
 const GUESSING = 'GUESSING';
 const WAITING = 'WAITING';
 const RESPONSE = 'RESPONSE';
+const LEAVING = 'LEAVING';
 
 const MAIN_LOBBY = '/main-lobby';
 const GAME_LOBBY = '/game-lobby';
@@ -68,6 +69,7 @@ export {
   GUESSING,
   WAITING,
   RESPONSE,
+  LEAVING,
   MAIN_LOBBY,
   GAME_LOBBY,
   LOADING,

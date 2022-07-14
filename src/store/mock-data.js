@@ -1,8 +1,3 @@
-import avatar01 from '../assets/avatars/avatar01.png';
-import avatar02 from '../assets/avatars/avatar02.png';
-import avatar03 from '../assets/avatars/avatar03.png';
-import avatar04 from '../assets/avatars/avatar04.png';
-
 export const currentUser = {
   player: {
     id: 1,

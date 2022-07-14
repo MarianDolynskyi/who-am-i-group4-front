@@ -18,7 +18,7 @@ function CountdownTimer({ inLobby, time = 60, small, timeClassName, paused }) {
 
   useEffect(() => {
     async function leaveResetData() {
-      if (seconds === 0) {
+      if (seconds <= 0) {
         try {
           await leaveGame(playerId, gameData.id);
           resetData();
