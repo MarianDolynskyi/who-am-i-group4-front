@@ -1,7 +1,6 @@
 import HistoryItem from '../history-item/history-item';
 import QuestionForm from '../question-form/question-form';
 import { useEffect, useRef, useState } from 'react';
-import { users, history } from '../../store/mock-data';
 import AnswerForm from '../answer-form/answer-form';
 import MessageBlock from '../message-block/message-block';
 import './history-container.scss';
@@ -17,7 +16,7 @@ import { useContext } from 'react';
 import GameDataContext from '../../contexts/game-data-context';
 import usePlayers from '../../hooks/usePlayers';
 
-function HistoryContainer({ mode, currentPlayer }) {
+function HistoryContainer({ mode }) {
   const { gameData, playerId } = useContext(GameDataContext);
   const [message, setMessage] = useState('yes');
   const [currentQuestion, setCurrentQuestion] = useState('');
@@ -77,32 +76,35 @@ function HistoryContainer({ mode, currentPlayer }) {
   });
 
   return (
-    <div className="history">
-      <div className="history_list">
-        {history.map((item, index) => (
-          <HistoryItem
-            key={index}
-            avatar={item.avatar}
-            question={item.question}
-            answers={item.answers}
+    console.log('history', history, 'MODE', mode),
+    (
+      <div className="history">
+        <div className="history_list">
+          {history.map((item, index) => (
+            <HistoryItem
+              key={index}
+              avatar={item.avatar}
+              question={item.question}
+              answers={item.answers}
+            />
+          ))}
+          <div className="list_scroll_bottom" ref={bottomElement}></div>
+        </div>
+        {mode === ASKING && !disabled && (
+          <QuestionForm
+            setCurrentQuestion={setCurrentQuestion}
+            currentQuestion={currentQuestion}
+            sendQuestion={sendQuestionHandler}
           />
-        ))}
-        <div className="list_scroll_bottom" ref={bottomElement}></div>
+        )}
+        {(mode === ANSWERING || mode === GUESSING) && (
+          <AnswerForm mode={mode} onClick={handleClick} />
+        )}
+        {(mode === RESPONSE || mode === WAITING) && (
+          <MessageBlock mode={mode} message={message} />
+        )}
       </div>
-      {mode === ASKING && !disabled && (
-        <QuestionForm
-          setCurrentQuestion={setCurrentQuestion}
-          currentQuestion={currentQuestion}
-          sendQuestion={sendQuestionHandler}
-        />
-      )}
-      {(mode === ANSWERING || mode === GUESSING) && (
-        <AnswerForm mode={mode} onClick={handleClick} />
-      )}
-      {(mode === RESPONSE || mode === WAITING) && (
-        <MessageBlock mode={mode} message={message} />
-      )}
-    </div>
+    )
   );
 }
 

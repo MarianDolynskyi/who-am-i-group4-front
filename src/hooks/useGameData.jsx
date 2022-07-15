@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -26,6 +25,7 @@ export default function useGameData() {
         try {
           const { data } = await getHistory(userId, gameId);
           setGameData((state) => ({ ...state, history: data }));
+          console.log('HISTORY', data);
         } catch (error) {
           //to do: handle errors
         }
