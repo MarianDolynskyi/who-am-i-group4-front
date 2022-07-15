@@ -76,35 +76,32 @@ function HistoryContainer({ mode }) {
   });
 
   return (
-    console.log('history', history, 'MODE', mode),
-    (
-      <div className="history">
-        <div className="history_list">
-          {history.map((item, index) => (
-            <HistoryItem
-              key={index}
-              avatar={item.avatar}
-              question={item.question}
-              answers={item.answers}
-            />
-          ))}
-          <div className="list_scroll_bottom" ref={bottomElement}></div>
-        </div>
-        {mode === ASKING && !disabled && (
-          <QuestionForm
-            setCurrentQuestion={setCurrentQuestion}
-            currentQuestion={currentQuestion}
-            sendQuestion={sendQuestionHandler}
+    <div className="history">
+      <div className="history_list">
+        {history.map((item, index) => (
+          <HistoryItem
+            key={index}
+            avatar={item.avatar}
+            question={item.question}
+            answers={item.answers}
           />
-        )}
-        {(mode === ANSWERING || mode === GUESSING) && (
-          <AnswerForm mode={mode} onClick={handleClick} />
-        )}
-        {(mode === RESPONSE || mode === WAITING) && (
-          <MessageBlock mode={mode} message={message} />
-        )}
+        ))}
+        <div className="list_scroll_bottom" ref={bottomElement}></div>
       </div>
-    )
+      {mode === ASKING && !disabled && (
+        <QuestionForm
+          setCurrentQuestion={setCurrentQuestion}
+          currentQuestion={currentQuestion}
+          sendQuestion={sendQuestionHandler}
+        />
+      )}
+      {(mode === ANSWERING || mode === GUESSING) && (
+        <AnswerForm mode={mode} onClick={handleClick} />
+      )}
+      {(mode === RESPONSE || mode === WAITING) && (
+        <MessageBlock mode={mode} message={message} />
+      )}
+    </div>
   );
 }
 

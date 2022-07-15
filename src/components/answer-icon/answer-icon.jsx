@@ -9,14 +9,15 @@ function AnswerIcon({ status, avatar }) {
   const classes = 'icon_status';
 
   switch (status) {
-    case 'yes':
+    case 'YES':
       icon = <ReactCheck className={classes} />;
       break;
-    case 'no':
+    case 'NO':
       icon = <ReactCross className={classes} />;
       break;
     default:
       icon = <ReactQuestion className={classes} />;
+      break;
   }
 
   return (
