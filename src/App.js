@@ -34,7 +34,11 @@ import GameLobby from './screens/game-lobby/game-lobby';
 import ProfilePage from './screens/profile-page/profile-page';
 
 function App() {
-  const [gameData, setGameData] = useState({ status: null, players: [] });
+  const [gameData, setGameData] = useState({
+    status: null,
+    players: [],
+    history: [],
+  });
   const [playerId, setPlayerId] = useState(sessionStorage.playerId || uuidv4());
 
   useEffect(() => {
@@ -42,7 +46,7 @@ function App() {
   }, [playerId]);
 
   function resetData() {
-    setGameData({ status: null, players: [] });
+    setGameData({ status: null, players: [], history: [] });
     sessionStorage.removeItem('gameId');
     sessionStorage.removeItem('playerId');
     setPlayerId(uuidv4());

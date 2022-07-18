@@ -9,7 +9,7 @@ import CreateNewLobbyModal from '../modals/create-new-lobby';
 import { GAME_LOBBY } from '../../constants/constants';
 import { useNavigate } from 'react-router-dom';
 
-function Header({ type, lobby, startGame, timer }) {
+function Header({ className, type, lobby, startGame, timer }) {
   const [leaveModalActive, setLeaveModalActive] = useState(false);
   const [createModalActive, setCreateModalActive] = useState(false);
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ function Header({ type, lobby, startGame, timer }) {
   };
 
   return (
-    <header className="game-header">
+    <header className={clsx('game-header', className)}>
       <GameTitle className={'small'} />
       {type === 'game-lobby' && (
         <>

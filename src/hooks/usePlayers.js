@@ -15,5 +15,5 @@ export default function usePlayers() {
     (player) => player.player.id !== playerId
   );
 
-  return { currentPlayer, playersWithoutCurrent };
+  return { currentPlayer, playersWithoutCurrent, players };
 }

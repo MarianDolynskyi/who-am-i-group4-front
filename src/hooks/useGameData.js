@@ -25,12 +25,18 @@ export default function useGameData() {
         try {
           const { data } = await findGameById(userId, gameId);
 
-          if (data.players.length) setGameData(data);
+          if (data.players.length)
+            setGameData((state) => ({
+              ...state,
+              status: data.status,
+              players: data.players,
+            }));
         } catch (error) {
-          if (error.response.status === 404) {
-            resetData();
-            navigate('/');
-          }
+          //to do: handle errors
+          // if (error.response.status === 404) {
+          //   resetData();
+          //   navigate('/');
+          // }
         }
       }
     }, 1000);

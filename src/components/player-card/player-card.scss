@@ -24,6 +24,10 @@
     overflow: hidden;
   }
 
+  &__you-label {
+    min-width: 161px;
+  }
+
   &__you-label,
   &__assigned-character {
     display: flex;

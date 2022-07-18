@@ -52,7 +52,6 @@
     min-width: 48px;
     height: 48px;
     border-radius: 50%;
-    margin-right: 16px;
   }
 
   .avatar01 {
@@ -75,19 +74,5 @@
     align-items: center;
     gap: 32px;
     padding-right: 24px;
-  }
-}
-
-@media screen and (max-width: 1280px) {
-  .history-item {
-    gap: 16px;
-    padding: 16px;
-
-    &___question {
-      font-size: 20px;
-      line-height: 24px;
-      padding: 8px;
-      min-height: auto;
-    }
   }
 }

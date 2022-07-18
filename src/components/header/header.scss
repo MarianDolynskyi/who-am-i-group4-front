@@ -3,7 +3,6 @@
 
 .game-header {
   width: 1270px;
-  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -11,7 +10,11 @@
   font-size: 32px;
   line-height: 39px;
   color: $modals-background;
-  margin: 31px 0 24px;
+  margin: 31px 0 40px;
+
+  &.suggest-character {
+    height: 80px;
+  }
 
   &__leave-btn-wrapper {
     width: 184px;
