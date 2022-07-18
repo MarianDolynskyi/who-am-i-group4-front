@@ -9,7 +9,7 @@ import {
   WAITING_FOR_PLAYERS,
 } from '../constants/constants';
 import GameDataContext from '../contexts/game-data-context';
-import { findGameById, getHistory } from '../services/games-service';
+import { findGameById } from '../services/games-service';
 
 export default function useGameData() {
   const { gameData, setGameData, resetData, playerId } =
@@ -23,13 +23,6 @@ export default function useGameData() {
 
       if (gameId && userId) {
         try {
-          const { data } = await getHistory(userId, gameId);
-          setGameData((state) => ({ ...state, history: data }));
-          console.log('HISTORY', data);
-        } catch (error) {
-          //to do: handle errors
-        }
-        try {
           const { data } = await findGameById(userId, gameId);
 
           if (data.players.length)
@@ -39,10 +32,11 @@ export default function useGameData() {
               players: data.players,
             }));
         } catch (error) {
-          if (error.response.status === 404) {
-            resetData();
-            navigate('/');
-          }
+          //to do: handle errors
+          // if (error.response.status === 404) {
+          //   resetData();
+          //   navigate('/');
+          // }
         }
       }
     }, 1000);

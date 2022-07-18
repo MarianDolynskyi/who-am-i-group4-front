@@ -14,7 +14,7 @@ import {
 } from '../../constants/constants';
 import { useContext } from 'react';
 import GameDataContext from '../../contexts/game-data-context';
-import usePlayers from '../../hooks/usePlayers';
+import useHistory from '../../hooks/useHistory';
 
 function HistoryContainer({ mode }) {
   const { gameData, playerId } = useContext(GameDataContext);
@@ -23,7 +23,7 @@ function HistoryContainer({ mode }) {
   const [disabled, setDisabled] = useState(false);
   const bottomElement = useRef(null);
 
-  const { players } = usePlayers();
+  const history = useHistory();
 
   useEffect(() => {
     const listBottom = bottomElement.current;
@@ -59,33 +59,18 @@ function HistoryContainer({ mode }) {
     }
   };
 
-  const history = gameData.history.map((item) => {
-    const user = players.find((player) => player.player.id === item.PlayerId);
-    const avatar = user && user.avatar;
-    const answers = item.Answers.map((answer) => {
-      const player = players.find(
-        (player) => player.player.id === answer.PlayerId
-      );
-      const avatar = player && player.avatar;
-      const status = answer && answer.Answer;
-
-      return { avatar, status };
-    });
-
-    return { avatar, answers, question: item.Question };
-  });
-
   return (
     <div className="history">
       <div className="history_list">
-        {history.map((item, index) => (
-          <HistoryItem
-            key={index}
-            avatar={item.avatar}
-            question={item.question}
-            answers={item.answers}
-          />
-        ))}
+        {history &&
+          history.map((item, index) => (
+            <HistoryItem
+              key={index}
+              avatar={item.avatar}
+              question={item.question}
+              answers={item.answers}
+            />
+          ))}
         <div className="list_scroll_bottom" ref={bottomElement}></div>
       </div>
       {mode === ASKING && !disabled && (

@@ -17,7 +17,6 @@ function Lobby() {
   const { gameData, playerId } = useContext(GameDataContext);
   const [leaveModalActive, setLeaveModalActive] = useState(false);
   const [suggestModalActive, setSuggestModalActive] = useState(false);
-  const [suggestBtn, setSuggestBtn] = useState(true);
 
   useGameData();
   const { currentPlayer, playersWithoutCurrent } = usePlayers();
@@ -32,7 +31,6 @@ function Lobby() {
         characterName.trim()
       );
       setSuggestModalActive(false);
-      setSuggestBtn(false);
     } catch (error) {
       //to do: handle errors
     }
@@ -72,7 +70,7 @@ function Lobby() {
                 ))}
               </div>
               <div className="input-screen__btn-wrapper">
-                {suggestBtn && currentPlayer && (
+                {currentPlayer && currentPlayer.state !== READY && (
                   <Btn
                     className={['btn-green-solid']}
                     onClick={() => setSuggestModalActive(true)}
