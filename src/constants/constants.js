@@ -8,7 +8,9 @@ const NUMBER_OF_PLAYERS = 4;
 const READY = 'READY';
 const NOT_READY = 'NOT_READY';
 const ASKING = 'ASKING';
+const ASKED = 'ASKED';
 const ANSWERING = 'ANSWERING';
+const ANSWERED = 'ANSWERED';
 const FINISHED = 'FINISHED';
 const YES = 'YES';
 const NO = 'NO';
@@ -61,7 +63,9 @@ export {
   READY,
   NOT_READY,
   ASKING,
+  ASKED,
   ANSWERING,
+  ANSWERED,
   FINISHED,
   YES,
   NO,
