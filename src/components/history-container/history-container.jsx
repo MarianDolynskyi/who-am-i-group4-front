@@ -8,23 +8,32 @@ import { answerQuestion, askQuestion } from '../../services/games-service';
 import {
   ANSWERED,
   ANSWERING,
+  ASKED,
   ASKING,
-  GUESSING,
-  READY,
   RESPONSE,
-  WAITING,
 } from '../../constants/constants';
 import { useContext } from 'react';
 import GameDataContext from '../../contexts/game-data-context';
 import useHistory from '../../hooks/useHistory';
 
-function HistoryContainer({ mode, disabled }) {
+function HistoryContainer({ mode }) {
   const { gameData, playerId } = useContext(GameDataContext);
   const [message, setMessage] = useState('yes');
   const [currentQuestion, setCurrentQuestion] = useState('');
+  const [disabled, setDisabled] = useState(false);
   const bottomElement = useRef(null);
 
   const history = useHistory();
+
+  useEffect(() => {
+    if (mode === ASKING || mode === ANSWERING) {
+      setDisabled(false);
+    }
+
+    if (mode === ASKED || mode === ANSWERED) {
+      setDisabled(true);
+    }
+  }, [mode]);
 
   useEffect(() => {
     const listBottom = bottomElement.current;
