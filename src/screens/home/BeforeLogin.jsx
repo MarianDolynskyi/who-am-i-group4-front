@@ -30,7 +30,7 @@ function BeforeLogin({ setIsLogin, createGame }) {
         Continue with Facebook
       </Btn>
       <div className="dividing-line"></div>
-      <div className="text-login already">Already have a account?</div>
+      <div className="text-login already">Already have an account?</div>
       <Btn
         className={'btn-blue-outline'}
         onClick={() => {

@@ -6,9 +6,11 @@ import MessageBlock from '../message-block/message-block';
 import './history-container.scss';
 import { answerQuestion, askQuestion } from '../../services/games-service';
 import {
+  ANSWERED,
   ANSWERING,
   ASKING,
   GUESSING,
+  READY,
   RESPONSE,
   WAITING,
 } from '../../constants/constants';
@@ -16,11 +18,10 @@ import { useContext } from 'react';
 import GameDataContext from '../../contexts/game-data-context';
 import useHistory from '../../hooks/useHistory';
 
-function HistoryContainer({ mode }) {
+function HistoryContainer({ mode, disabled }) {
   const { gameData, playerId } = useContext(GameDataContext);
   const [message, setMessage] = useState('yes');
   const [currentQuestion, setCurrentQuestion] = useState('');
-  const [disabled, setDisabled] = useState(false);
   const bottomElement = useRef(null);
 
   const history = useHistory();
@@ -41,7 +42,6 @@ function HistoryContainer({ mode }) {
       try {
         await askQuestion(playerId, gameData.id, currentQuestion);
         setCurrentQuestion('');
-        setDisabled(true);
       } catch (error) {
         //to do: handle error
       }
@@ -73,19 +73,17 @@ function HistoryContainer({ mode }) {
           ))}
         <div className="list_scroll_bottom" ref={bottomElement}></div>
       </div>
-      {mode === ASKING && !disabled && (
+      {mode === ASKING && (
         <QuestionForm
           setCurrentQuestion={setCurrentQuestion}
           currentQuestion={currentQuestion}
           sendQuestion={sendQuestionHandler}
         />
       )}
-      {(mode === ANSWERING || mode === GUESSING) && (
-        <AnswerForm mode={mode} onClick={handleClick} />
+      {(mode === ANSWERING || mode === ANSWERED) && (
+        <AnswerForm mode={mode} onClick={handleClick} disabled={disabled} />
       )}
-      {(mode === RESPONSE || mode === WAITING) && (
-        <MessageBlock mode={mode} message={message} />
-      )}
+      {mode === RESPONSE && <MessageBlock mode={mode} message={message} />}
     </div>
   );
 }

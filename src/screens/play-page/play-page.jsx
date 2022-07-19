@@ -2,7 +2,7 @@ import UsersContainer from '../../components/users-container/users-container';
 import HistoryContainer from '../../components/history-container/history-container';
 import GuessCharacterModal from '../../components/modals/guess-a-character';
 import Header from '../../components/header/header';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ModalContext from '../../contexts/modal-context';
 import './play-page.scss';
 import ScreenWrapper from '../../components/wrappers/screen-wrapper/screen-wrapper';
@@ -11,13 +11,31 @@ import { askQuestion } from '../../services/games-service';
 import GameDataContext from '../../contexts/game-data-context';
 import useGameData from '../../hooks/useGameData';
 import usePlayers from '../../hooks/usePlayers';
+import { ANSWERED, ANSWERING, ASKED, ASKING } from '../../constants/constants';
 
 function PlayPage() {
   const { gameData, playerId } = useContext(GameDataContext);
   const [active, setActive] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   useGameData();
   const { currentPlayer, playersWithoutCurrent } = usePlayers();
+
+  useEffect(() => {
+    if (
+      currentPlayer &&
+      (currentPlayer.state === ASKING || currentPlayer.state === ANSWERING)
+    ) {
+      setDisabled(false);
+    }
+
+    if (
+      currentPlayer &&
+      (currentPlayer.state === ASKED || currentPlayer.state === ANSWERED)
+    ) {
+      setDisabled(true);
+    }
+  }, [currentPlayer]);
 
   const submitGuess = async (event, guess) => {
     event.preventDefault();
@@ -44,7 +62,10 @@ function PlayPage() {
                     players={playersWithoutCurrent}
                     timer={gameData.timer}
                   />
-                  <HistoryContainer mode={currentPlayer.state} />
+                  <HistoryContainer
+                    mode={currentPlayer.state}
+                    disabled={disabled}
+                  />
                 </>
               )}
               <GuessCharacterModal
