@@ -33,12 +33,22 @@ function CountdownTimer({ inLobby, time = 60, small, timeClassName, paused }) {
 
   return (
     <div className="timer">
-      <p className={clsx('timer__start', [inLobby, small])}>GAME START</p>
-      <div
-        className={clsx('timer__time', { 'time-small': small }, timeClassName)}
-      >
-        {convertTime(seconds)}
-      </div>
+      {seconds > 0 ? (
+        <>
+          <p className={clsx('timer__start', [inLobby, small])}>GAME START</p>
+          <div
+            className={clsx(
+              'timer__time',
+              { 'time-small': small },
+              timeClassName
+            )}
+          >
+            {convertTime(seconds)}
+          </div>
+        </>
+      ) : (
+        ''
+      )}
     </div>
   );
 }

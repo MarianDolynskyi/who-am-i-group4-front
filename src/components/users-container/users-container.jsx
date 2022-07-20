@@ -5,7 +5,7 @@ import './users-container.scss';
 import { useContext } from 'react';
 import { LEAVING } from '../../constants/constants';
 
-function UsersContainer({ currentPlayer, players, timer }) {
+function UsersContainer({ currentPlayer, players, timer = 60 }) {
   const modalActive = useContext(ModalContext)[0];
 
   return (

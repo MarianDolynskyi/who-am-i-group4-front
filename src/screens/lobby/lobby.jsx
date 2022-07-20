@@ -26,7 +26,7 @@ function Lobby() {
     try {
       await suggestCharacter(
         playerId,
-        gameData.id,
+        gameData.id || sessionStorage.gameId,
         playerName.trim(),
         characterName.trim()
       );

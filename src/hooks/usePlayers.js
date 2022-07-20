@@ -15,5 +15,8 @@ export default function usePlayers() {
     (player) => player.player.id !== playerId
   );
 
+  sessionStorage.setItem('avatar', currentPlayer.avatar);
+  sessionStorage.setItem('name', currentPlayer.nickname);
+
   return { currentPlayer, playersWithoutCurrent, players };
 }
