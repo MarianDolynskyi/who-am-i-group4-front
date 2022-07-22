@@ -1,22 +1,30 @@
 import { useContext } from 'react';
+import { ASKED, ASKING, GUESSING } from '../constants/constants';
 import GameDataContext from '../contexts/game-data-context';
 
 export default function usePlayers() {
   const { gameData, playerId } = useContext(GameDataContext);
 
-  const players = gameData.players.map((player, index) => ({
-    nickname: player.player.name || `Player ${index + 1}`,
-    avatar: `avatar0${index + 1}`,
-    ...player,
-  }));
+  return gameData.players.reduce(
+    (obj, player) => {
+      if (
+        player.state === ASKING ||
+        player.state === ASKED ||
+        player.state === GUESSING
+      ) {
+        obj.playerTurn = player;
+      }
 
-  const currentPlayer = players.find((player) => player.player.id === playerId);
-  const playersWithoutCurrent = players.filter(
-    (player) => player.player.id !== playerId
+      if (player.player.id === playerId) {
+        obj.currentPlayer = player;
+
+        return obj;
+      }
+
+      obj.playersWithoutCurrent.push(player);
+
+      return obj;
+    },
+    { playersWithoutCurrent: [] }
   );
-
-  sessionStorage.setItem('avatar', currentPlayer.avatar);
-  sessionStorage.setItem('name', currentPlayer.nickname);
-
-  return { currentPlayer, playersWithoutCurrent, players };
 }

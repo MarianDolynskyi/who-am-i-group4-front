@@ -1,44 +1,29 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
+  DEFEAT,
   LOADING,
   LOBBY,
   PLAY,
   PROCESSING_QUESTION,
   SUGGESTING_CHARACTERS,
+  VICTORY,
   WAITING_FOR_PLAYERS,
 } from '../constants/constants';
 import GameDataContext from '../contexts/game-data-context';
-import { findGameById } from '../services/games-service';
 
 export default function useGameData() {
-  const { gameData, setGameData, resetData, playerId } =
+  const { gameData, resetData, playerId, fetchGame } =
     useContext(GameDataContext);
   const navigate = useNavigate();
+  const promiseRef = useRef();
 
   useEffect(() => {
+    if (promiseRef.current && promiseRef.current.state === 'pending') {
+      return;
+    }
     const checkStatus = setTimeout(async () => {
-      const gameId = gameData.id || sessionStorage.getItem('gameId');
-      const userId = playerId || sessionStorage.getItem('playerId');
-
-      if (gameId && userId) {
-        try {
-          const { data } = await findGameById(userId, gameId);
-
-          if (data.players.length)
-            setGameData((state) => ({
-              ...state,
-              status: data.status,
-              players: data.players,
-            }));
-        } catch (error) {
-          //to do: handle errors
-          // if (error.response.status === 404) {
-          //   resetData();
-          //   navigate('/');
-          // }
-        }
-      }
+      promiseRef.current = fetchGame();
     }, 1000);
 
     return () => clearTimeout(checkStatus);
@@ -48,6 +33,18 @@ export default function useGameData() {
     if (!gameData.id && !sessionStorage.gameId) {
       resetData();
       navigate('/');
+
+      return;
+    }
+
+    if (gameData.winners && gameData.winners.length) {
+      const [winner] = gameData.winners;
+
+      if (winner.id === playerId) {
+        navigate(VICTORY);
+      } else {
+        navigate(DEFEAT);
+      }
 
       return;
     }

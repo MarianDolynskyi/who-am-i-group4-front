@@ -5,7 +5,7 @@ import SelectCharacterModal from '../../components/modals/select-character';
 import Header from '../../components/header/header';
 import ScreenWrapper from '../../components/wrappers/screen-wrapper/screen-wrapper';
 import Spinner from '@atlaskit/spinner';
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { READY } from '../../constants/constants';
 import './lobby.scss';
 import GameDataContext from '../../contexts/game-data-context';
@@ -17,13 +17,13 @@ function Lobby() {
   const { gameData, playerId } = useContext(GameDataContext);
   const [leaveModalActive, setLeaveModalActive] = useState(false);
   const [suggestModalActive, setSuggestModalActive] = useState(false);
+  const [suggestBtn, setSuggestBtn] = useState(true);
 
   useGameData();
   const { currentPlayer, playersWithoutCurrent } = usePlayers();
 
-  const submitCharacter = async (event, playerName, characterName) => {
-    event.preventDefault();
-    try {
+  const submitCharacter = useCallback(
+    async (playerName, characterName) => {
       await suggestCharacter(
         playerId,
         gameData.id || sessionStorage.gameId,
@@ -31,15 +31,15 @@ function Lobby() {
         characterName.trim()
       );
       setSuggestModalActive(false);
-    } catch (error) {
-      //to do: handle errors
-    }
-  };
+      setSuggestBtn(false);
+    },
+    [playerId, gameData.id]
+  );
 
   return (
     <ScreenWrapper>
       <div className="input-screen">
-        {currentPlayer ? (
+        {currentPlayer && currentPlayer.nickname ? (
           <>
             <Header
               className="suggest-character"
@@ -70,7 +70,7 @@ function Lobby() {
                 ))}
               </div>
               <div className="input-screen__btn-wrapper">
-                {currentPlayer && currentPlayer.state !== READY && (
+                {suggestBtn && currentPlayer && currentPlayer.state !== READY && (
                   <Btn
                     className={['btn-green-solid']}
                     onClick={() => setSuggestModalActive(true)}
