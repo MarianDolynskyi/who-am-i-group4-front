@@ -1,5 +1,13 @@
 import axios from 'axios';
 
+async function getAllPlayersCount(player) {
+  return axios({
+    method: 'get',
+    url: '/api/v1/games/all-players-count',
+    headers: { 'X-Player': player },
+  });
+}
+
 async function findGameById(player, id) {
   return axios({
     method: 'get',
@@ -12,14 +20,6 @@ async function findAvailableGames(player) {
   return axios({
     method: 'get',
     url: '/api/v1/games',
-    headers: { 'X-Player': player },
-  });
-}
-
-async function getAllPlayersCount(player) {
-  return axios({
-    method: 'get',
-    url: '/api/v1/games/all-players-count',
     headers: { 'X-Player': player },
   });
 }
@@ -66,7 +66,18 @@ function askQuestion(player, id, message) {
   });
 }
 
-function submitGuess(player, id, guess) {
+function answerQuestion(player, id, question) {
+  return axios({
+    method: 'post',
+    url: `/api/v1/games/${id}/answer`,
+    headers: { 'X-Player': player },
+    data: {
+      message: question,
+    },
+  });
+}
+
+function askGuess(player, id, guess) {
   return axios({
     method: 'post',
     url: `/api/v1/games/${id}/guess`,
@@ -77,13 +88,13 @@ function submitGuess(player, id, guess) {
   });
 }
 
-function answerQuestion(player, id, question) {
+function answerGuess(player, id, answer) {
   return axios({
     method: 'post',
-    url: `/api/v1/games/${id}/answer`,
+    url: `/api/v1/games/${id}/guess/answer`,
     headers: { 'X-Player': player },
-    data: {
-      message: question,
+    params: {
+      answer,
     },
   });
 }
@@ -104,16 +115,26 @@ function getHistory(player, id) {
   });
 }
 
+function inactivePlayer(player, id) {
+  return axios({
+    method: 'post',
+    url: `/api/v1/games/${id}/inactivePlayer`,
+    headers: { 'X-Player': player },
+  });
+}
+
 export {
+  getAllPlayersCount,
   findGameById,
   findAvailableGames,
   createGame,
   suggestCharacter,
   findTurnInfo,
   askQuestion,
-  submitGuess,
   answerQuestion,
-  getAllPlayersCount,
+  askGuess,
+  answerGuess,
   leaveGame,
   getHistory,
+  inactivePlayer,
 };
