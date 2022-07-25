@@ -11,14 +11,14 @@ const ASKING = 'ASKING';
 const ASKED = 'ASKED';
 const ANSWERING = 'ANSWERING';
 const ANSWERED = 'ANSWERED';
+const GUESSING = 'GUESSING';
+const GUESSED = 'GUESSED';
 const FINISHED = 'FINISHED';
 const YES = 'YES';
 const NO = 'NO';
 const NOT_SURE = 'NOT_SURE';
-const GUESSING = 'GUESSING';
 const WAITING = 'WAITING';
 const RESPONSE = 'RESPONSE';
-const LEAVING = 'LEAVING';
 
 const MAIN_LOBBY = '/main-lobby';
 const GAME_LOBBY = '/game-lobby';
@@ -66,14 +66,14 @@ export {
   ASKED,
   ANSWERING,
   ANSWERED,
+  GUESSING,
+  GUESSED,
   FINISHED,
   YES,
   NO,
   NOT_SURE,
-  GUESSING,
   WAITING,
   RESPONSE,
-  LEAVING,
   MAIN_LOBBY,
   GAME_LOBBY,
   LOADING,

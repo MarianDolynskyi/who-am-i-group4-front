@@ -14,6 +14,7 @@ import {
   ANSWERED,
   ANSWERING,
   ASKING,
+  GUESSED,
   GUESSING,
   NO,
   RESPONSE,
@@ -28,6 +29,7 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
   const bottomElement = useRef(null);
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [answer, setAnswer] = useState('');
   const mode = currentPlayer.state;
 
   useEffect(() => {
@@ -60,7 +62,7 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
           const users = playersAvatars.filter(
             (player) => player.id !== item.PlayerId
           );
-          const avatar = user && user.avatar;
+          const avatar = user?.avatar;
           const answers = users.map((user) => {
             const answer = item.Answers.find(
               (answer) => user.id === answer.PlayerId
@@ -111,6 +113,12 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
     }
   }, [lastHistoryItemAnswersLength, answersLength, fetchHistory]);
 
+  useEffect(() => {
+    if (playerTurn.state !== GUESSED) {
+      setAnswer('');
+    }
+  }, [playerTurn.state]);
+
   const submitAsk = useCallback(
     async (question) => {
       setLoading(true);
@@ -142,6 +150,7 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
   const submitAnswerGuess = useCallback(
     async (answer) => {
       setLoading(true);
+      setAnswer(answer);
       try {
         await answerGuess(playerId, gameData.id, answer);
         await fetchGame();
@@ -154,45 +163,40 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
   );
 
   return (
-    console.log(mode, gameData),
-    (
-      <div className="history">
-        <div className="history_list">
-          {history &&
-            history.map((item, index) => (
-              <HistoryItem
-                key={index}
-                avatar={item.avatar}
-                question={item.question}
-                answers={item.answers}
-              />
-            ))}
-          <div className="list_scroll_bottom" ref={bottomElement}></div>
-        </div>
-        <div className="history_bottom">
-          {mode === ASKING && (
-            <QuestionForm onSubmit={submitAsk} disabled={loading} />
-          )}
-          {mode === ANSWERING && (
-            <AnswerForm
-              mode={playerTurn.player.state === GUESSING ? GUESSING : mode}
-              onSubmit={
-                playerTurn.player.state === GUESSING
-                  ? submitAnswerGuess
-                  : submitAnswer
-              }
-              disabled={loading}
+    <div className="history">
+      <div className="history_list">
+        {history &&
+          history.map((item, index) => (
+            <HistoryItem
+              key={index}
+              avatar={item.avatar}
+              question={item.question}
+              answers={item.answers}
             />
-          )}
-          {mode === ANSWERED && (
-            <MessageBlock mode={WAITING} message={currentPlayer.state} />
-          )}
-          {/* {mode === ANSWERED && currentPlayer.enteredQuestion && (
-            <MessageBlock mode={RESPONSE} message={NO} />
-          )} */}
-        </div>
+          ))}
+        <div className="list_scroll_bottom" ref={bottomElement}></div>
       </div>
-    )
+      <div className="history_bottom">
+        {mode === ASKING && (
+          <QuestionForm onSubmit={submitAsk} disabled={loading} />
+        )}
+        {mode === ANSWERING && playerTurn?.question && (
+          <AnswerForm
+            mode={playerTurn.state === GUESSING ? GUESSING : mode}
+            onSubmit={
+              playerTurn.state === GUESSING ? submitAnswerGuess : submitAnswer
+            }
+            disabled={loading}
+          />
+        )}
+        {mode === ANSWERED && playerTurn.state === GUESSED && (
+          <MessageBlock mode={WAITING} message={answer} />
+        )}
+        {mode === GUESSED && gameData.wrong && (
+          <MessageBlock mode={RESPONSE} message={NO} />
+        )}
+      </div>
+    </div>
   );
 }
 

@@ -7,34 +7,17 @@ import ModalContext from '../../contexts/modal-context';
 import './play-page.scss';
 import ScreenWrapper from '../../components/wrappers/screen-wrapper/screen-wrapper';
 import Spinner from '@atlaskit/spinner';
-import { inactivePlayer, askGuess } from '../../services/games-service';
+import { askGuess } from '../../services/games-service';
 import GameDataContext from '../../contexts/game-data-context';
 import useGameData from '../../hooks/useGameData';
 import usePlayers from '../../hooks/usePlayers';
-import { ANSWERING, ASKING, INACTIVE } from '../../constants/constants';
-import { useNavigate } from 'react-router-dom';
 
 function PlayPage() {
-  const { gameData, playerId, resetData } = useContext(GameDataContext);
+  const { gameData, playerId } = useContext(GameDataContext);
   const [active, setActive] = useState(false);
-  const navigate = useNavigate();
 
   useGameData();
   const { currentPlayer, playersWithoutCurrent, playerTurn } = usePlayers();
-
-  const makePlayerInactive = useCallback(async () => {
-    try {
-      const { data } = await inactivePlayer(playerId, gameData.id);
-
-      if (data) {
-        resetData();
-        navigate(INACTIVE);
-      }
-    } catch {
-      resetData();
-      navigate(INACTIVE);
-    }
-  }, [playerId, gameData.id, resetData, navigate]);
 
   const onSubmitGuess = useCallback(
     async (event, guess) => {
@@ -49,29 +32,6 @@ function PlayPage() {
     [gameData.id, playerId]
   );
 
-  const onTimerFinish = useCallback(() => {
-    if (
-      currentPlayer.playerState === ASKING &&
-      !currentPlayer.enteredQuestion
-    ) {
-      makePlayerInactive();
-
-      return;
-    }
-
-    if (
-      currentPlayer.playerState === ANSWERING &&
-      !currentPlayer.enteredAnswer
-    ) {
-      makePlayerInactive();
-    }
-  }, [
-    currentPlayer?.enteredAnswer,
-    currentPlayer?.enteredQuestion,
-    currentPlayer?.playerState,
-    makePlayerInactive,
-  ]);
-
   return (
     <ScreenWrapper className="lobby-screen">
       {currentPlayer ? (
@@ -83,7 +43,7 @@ function PlayPage() {
                 currentPlayer={currentPlayer}
                 players={playersWithoutCurrent}
                 playerTurn={playerTurn}
-                onTimerFinish={onTimerFinish}
+                timer={gameData.timer}
               />
               <HistoryContainer
                 currentPlayer={currentPlayer}
@@ -94,7 +54,6 @@ function PlayPage() {
                 active={active}
                 onSubmit={onSubmitGuess}
                 onCancel={() => setActive(false)}
-                onTimerFinish={makePlayerInactive}
               />
             </ModalContext.Provider>
           </div>

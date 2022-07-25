@@ -56,6 +56,8 @@ async function findTurnInfo(player, id) {
 }
 
 function askQuestion(player, id, message) {
+  console.log('QUESTION', player, id, message);
+
   return axios({
     method: 'post',
     url: `/api/v1/games/${id}/questions`,

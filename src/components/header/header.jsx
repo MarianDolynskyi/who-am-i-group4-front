@@ -10,7 +10,7 @@ import { GAME_LOBBY, INACTIVE } from '../../constants/constants';
 import { useNavigate } from 'react-router-dom';
 import GameDataContext from '../../contexts/game-data-context';
 
-function Header({ className, type, lobby, startGame }) {
+function Header({ className, type, lobby, startGame, timer }) {
   const { leaveGame } = useContext(GameDataContext);
   const [leaveModalActive, setLeaveModalActive] = useState(false);
   const [createModalActive, setCreateModalActive] = useState(false);
@@ -34,11 +34,13 @@ function Header({ className, type, lobby, startGame }) {
         <>
           <div className="game-header__title">SUGGEST A CHARACTER</div>
           <div className="game-header__timer-wrapper">
-            <CountdownTimer
-              inLobby={clsx({ 'in-lobby': type === 'game-lobby' })}
-              time={120}
-              onFinish={onTimerFinish}
-            />
+            {!!timer && (
+              <CountdownTimer
+                inLobby={clsx({ 'in-lobby': type === 'game-lobby' })}
+                time={timer}
+                onFinish={onTimerFinish}
+              />
+            )}
           </div>
         </>
       )}
