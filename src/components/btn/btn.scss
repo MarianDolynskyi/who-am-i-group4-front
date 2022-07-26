@@ -36,24 +36,25 @@
 }
 
 .btn-green-solid,
-.btn-green-solid:disabled {
-  background: $btn-green;
-  color: $font-black;
+.btn-pink-solid,
+.btn-orange-solid {
   width: 100%;
+  color: $font-black;
+}
+
+.btn-green-solid,
+.btn-green-solid.btn-answer:disabled {
+  background: $btn-green;
 }
 
 .btn-pink-solid,
-.btn-pink-solid:disabled {
+.btn-pink-solid.btn-answer:disabled {
   background: $btn-pink;
-  color: $font-black;
-  width: 100%;
 }
 
 .btn-yellow-solid,
 .btn-yellow-solid:disabled {
   background: $btn-yellow;
-  color: $font-black;
-  width: 100%;
 }
 
 .btn-lightgray-outline {
@@ -99,9 +100,8 @@
 }
 
 .btn-orange-solid,
-.btn-orange-solid:disabled {
+.btn-orange-solid.btn-answer:disabled {
   background: $btn-orange;
-  color: $font-black;
 }
 
 .btn-rounded {
@@ -142,8 +142,8 @@
   background-image: url(../../assets/icons/fb.svg);
 }
 
-.btn-green-solid:disabled,
-.btn-pink-solid:disabled,
-.btn-orange-solid:disabled {
+.btn-answer:disabled,
+.btn-answer:disabled,
+.btn-answer:disabled {
   filter: brightness(130%);
 }

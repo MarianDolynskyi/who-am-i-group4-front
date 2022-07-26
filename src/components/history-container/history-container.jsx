@@ -5,17 +5,17 @@ import AnswerForm from '../answer-form/answer-form';
 import MessageBlock from '../message-block/message-block';
 import './history-container.scss';
 import {
-  answerQuestion,
-  askQuestion,
   getHistory,
+  askQuestion,
+  answerQuestion,
   answerGuess,
 } from '../../services/games-service';
 import {
-  ANSWERED,
-  ANSWERING,
   ASKING,
-  GUESSED,
+  ANSWERING,
+  ANSWERED,
   GUESSING,
+  GUESSED,
   NO,
   RESPONSE,
   WAITING,
@@ -163,40 +163,43 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
   );
 
   return (
-    <div className="history">
-      <div className="history_list">
-        {history &&
-          history.map((item, index) => (
-            <HistoryItem
-              key={index}
-              avatar={item.avatar}
-              question={item.question}
-              answers={item.answers}
+    console.log(playerTurn),
+    (
+      <div className="history">
+        <div className="history_list">
+          {history &&
+            history.map((item, index) => (
+              <HistoryItem
+                key={index}
+                avatar={item.avatar}
+                question={item.question}
+                answers={item.answers}
+              />
+            ))}
+          <div className="list_scroll_bottom" ref={bottomElement}></div>
+        </div>
+        <div className="history_bottom">
+          {mode === ASKING && (
+            <QuestionForm onSubmit={submitAsk} disabled={loading} />
+          )}
+          {mode === ANSWERING && playerTurn?.question && (
+            <AnswerForm
+              mode={playerTurn.state === GUESSING ? GUESSING : mode}
+              onSubmit={
+                playerTurn.state === GUESSING ? submitAnswerGuess : submitAnswer
+              }
+              disabled={loading}
             />
-          ))}
-        <div className="list_scroll_bottom" ref={bottomElement}></div>
+          )}
+          {mode === ANSWERED && playerTurn.state === GUESSED && (
+            <MessageBlock mode={WAITING} message={answer} />
+          )}
+          {mode === GUESSED && gameData.wrong && (
+            <MessageBlock mode={RESPONSE} message={NO} />
+          )}
+        </div>
       </div>
-      <div className="history_bottom">
-        {mode === ASKING && (
-          <QuestionForm onSubmit={submitAsk} disabled={loading} />
-        )}
-        {mode === ANSWERING && playerTurn?.question && (
-          <AnswerForm
-            mode={playerTurn.state === GUESSING ? GUESSING : mode}
-            onSubmit={
-              playerTurn.state === GUESSING ? submitAnswerGuess : submitAnswer
-            }
-            disabled={loading}
-          />
-        )}
-        {mode === ANSWERED && playerTurn.state === GUESSED && (
-          <MessageBlock mode={WAITING} message={answer} />
-        )}
-        {mode === GUESSED && gameData.wrong && (
-          <MessageBlock mode={RESPONSE} message={NO} />
-        )}
-      </div>
-    </div>
+    )
   );
 }
 

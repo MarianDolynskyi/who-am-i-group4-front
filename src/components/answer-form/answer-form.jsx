@@ -21,7 +21,7 @@ function AnswerForm({ disabled, mode, onSubmit }) {
       <Btn
         disabled={disabled}
         type="submit"
-        className={clsx('btn-green-solid', {
+        className={clsx('btn-green-solid btn-answer', {
           'btn-third': mode === ANSWERING,
           'btn-half': mode !== ANSWERING,
         })}
@@ -33,7 +33,7 @@ function AnswerForm({ disabled, mode, onSubmit }) {
       <Btn
         disabled={disabled}
         type="submit"
-        className={clsx('btn-pink-solid', {
+        className={clsx('btn-pink-solid btn-answer', {
           'btn-third': mode === ANSWERING,
           'btn-half': mode !== ANSWERING,
         })}
@@ -46,7 +46,7 @@ function AnswerForm({ disabled, mode, onSubmit }) {
         <Btn
           disabled={disabled}
           type="submit"
-          className="btn-orange-solid btn-third"
+          className="btn-orange-solid btn-third btn-answer"
           value={NOT_SURE}
         >
           <Question fill="#1e1b18" />

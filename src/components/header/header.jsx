@@ -23,8 +23,8 @@ function Header({ className, type, lobby, startGame, timer }) {
   };
 
   const onTimerFinish = useCallback(async () => {
-    await leaveGame();
     navigate(INACTIVE);
+    await leaveGame();
   }, [leaveGame, navigate]);
 
   return (
