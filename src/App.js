@@ -38,7 +38,7 @@ import {
 } from './services/games-service';
 import { useNavigate } from 'react-router-dom';
 
-const initialData = { status: null, players: [], winners: [], playersById: {} };
+const initialData = { status: null, players: [], winners: [] };
 
 function App() {
   const [gameData, setGameData] = useState(initialData);
@@ -70,16 +70,9 @@ function App() {
             avatar: `avatar0${index + 1}`,
             nickname: player.player.name || `Player ${index + 1}`,
           }));
-          const playersById = players.reduce((all, player) => {
-            return {
-              ...all,
-              [player.id]: player,
-            };
-          }, {});
-          setGameData((oldData) => ({
+          setGameData(() => ({
             ...data,
             players,
-            playersById: { ...oldData.playersById, ...playersById },
           }));
         }
       } catch (error) {

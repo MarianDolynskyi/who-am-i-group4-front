@@ -3,7 +3,7 @@ import { CREATE_ACCOUNT, SIGN_IN } from '../../constants/constants';
 import { useNavigate } from 'react-router-dom';
 import PlayQuickGameButton from './playQuickGameButton';
 
-function BeforeLogin({ setIsLogin, createGame }) {
+function BeforeLogin({ setIsLogin }) {
   const navigate = useNavigate();
 
   return (

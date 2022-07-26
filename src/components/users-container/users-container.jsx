@@ -2,40 +2,23 @@ import CountdownTimer from '../timer/timer-countdown/timer-countdown';
 import PlayerCard from '../player-card/player-card';
 import ModalContext from '../../contexts/modal-context';
 import './users-container.scss';
-import { useContext, useEffect, useState } from 'react';
-import { ASKED, ASKING, LEAVING } from '../../constants/constants';
+import { useContext } from 'react';
 
-function UsersContainer({ currentPlayer, players, playerTurn, onTimerFinish }) {
+function UsersContainer({ currentPlayer, players, timer, onTimerFinish }) {
   const modalActive = useContext(ModalContext)[0];
-
-  const [time, setTime] = useState(60);
-
-  useEffect(() => {
-    if (playerTurn.state === ASKED) {
-      setTime(20);
-
-      return;
-    }
-
-    if (playerTurn.state === ASKING) {
-      setTime(60);
-
-      return;
-    }
-
-    setTime(60);
-  }, [playerTurn.state]);
 
   return (
     <div className="users">
       <div className="users__timer-container">
         <p className="users__turn">TURN TIME</p>
-        <CountdownTimer
-          small={'v-small'}
-          time={time}
-          paused={modalActive}
-          onFinish={onTimerFinish}
-        />
+        {!!timer && (
+          <CountdownTimer
+            small={'v-small'}
+            time={timer}
+            paused={modalActive}
+            onFinish={onTimerFinish}
+          />
+        )}
       </div>
       {currentPlayer && (
         <PlayerCard
@@ -55,7 +38,7 @@ function UsersContainer({ currentPlayer, players, playerTurn, onTimerFinish }) {
               name={player.player.name}
               avatarClassName={player.avatar}
               assignedCharacter={player.player.character}
-              leaving={player.state === LEAVING}
+              leaving={player.isLeaving}
             />
           ))
         ) : (

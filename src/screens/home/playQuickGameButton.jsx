@@ -23,17 +23,9 @@ export default function PlayQuickGameButton() {
           nickname: player.player.name || `Player ${index + 1}`,
         }));
 
-        const playersById = players.reduce((all, player) => {
-          return {
-            ...all,
-            [player.id]: player,
-          };
-        }, {});
-
-        setGameData((oldData) => ({
+        setGameData(() => ({
           ...data,
           players,
-          playersById: { ...oldData.playersById, ...playersById },
         }));
         sessionStorage.setItem('gameId', data.id);
         navigate(LOADING);

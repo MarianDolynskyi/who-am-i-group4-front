@@ -11,7 +11,7 @@ describe('Check guess for XSS', () => {
   });
 
   test('Catches too short string', () => {
-    expect(checkGuess('12')).toBe(true);
+    expect(checkGuess('1')).toBe(true);
   });
 
   test('Catches too long string', () => {

@@ -44,7 +44,7 @@ function Lobby() {
             <Header
               className="suggest-character"
               type="game-lobby"
-              timer={gameData.timer}
+              timer={gameData.timer || 120}
             />
             <div className="input-screen__player">
               <div className="input-screen__player-card-wrapper">

@@ -12,6 +12,7 @@ function QuestionForm({ disabled, onSubmit }) {
 
       if (event.target.elements.question.value) {
         onSubmit(event.target.elements.question.value);
+        event.target.elements.question.value = '';
       }
     },
     [onSubmit]
