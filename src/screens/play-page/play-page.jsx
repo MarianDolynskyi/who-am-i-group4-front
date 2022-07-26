@@ -7,17 +7,36 @@ import ModalContext from '../../contexts/modal-context';
 import './play-page.scss';
 import ScreenWrapper from '../../components/wrappers/screen-wrapper/screen-wrapper';
 import Spinner from '@atlaskit/spinner';
-import { askGuess } from '../../services/games-service';
+import { askGuess, leaveGame } from '../../services/games-service';
 import GameDataContext from '../../contexts/game-data-context';
 import useGameData from '../../hooks/useGameData';
 import usePlayers from '../../hooks/usePlayers';
+import {
+  ANSWERING,
+  ANSWER_GUESS,
+  ASKING,
+  INACTIVE,
+} from '../../constants/constants';
+import { useNavigate } from 'react-router-dom';
 
 function PlayPage() {
-  const { gameData, playerId } = useContext(GameDataContext);
+  const { gameData, resetData, playerId } = useContext(GameDataContext);
   const [active, setActive] = useState(false);
+  const navigate = useNavigate();
 
   useGameData();
   const { currentPlayer, playersWithoutCurrent, playerTurn } = usePlayers();
+
+  const makePlayerInactive = useCallback(async () => {
+    try {
+      await leaveGame(playerId, gameData.id);
+      resetData();
+      navigate(INACTIVE);
+    } catch {
+      resetData();
+      navigate(INACTIVE);
+    }
+  }, [playerId, gameData.id, resetData, navigate]);
 
   const onSubmitGuess = useCallback(
     async (event, guess) => {
@@ -32,39 +51,62 @@ function PlayPage() {
     [gameData.id, playerId]
   );
 
+  const onTimerFinish = useCallback(() => {
+    if (
+      currentPlayer?.state === ASKING &&
+      currentPlayer?.question &&
+      playersWithoutCurrent.some((p) => !p.answer)
+    ) {
+      return;
+    }
+
+    if (
+      (currentPlayer?.state === ANSWERING ||
+        currentPlayer?.state === ANSWER_GUESS) &&
+      (currentPlayer?.answer || currentPlayer?.question)
+    ) {
+      return;
+    }
+
+    makePlayerInactive();
+  }, [
+    currentPlayer?.answer,
+    currentPlayer?.question,
+    currentPlayer?.state,
+    playersWithoutCurrent,
+    makePlayerInactive,
+  ]);
+
   return (
-    console.log(gameData),
-    (
-      <ScreenWrapper className="lobby-screen">
-        {currentPlayer ? (
-          <>
-            <Header type="play-game" />
-            <div className="lobby-screen__content_wrapper">
-              <ModalContext.Provider value={[active, setActive]}>
-                <UsersContainer
-                  currentPlayer={currentPlayer}
-                  players={playersWithoutCurrent}
-                  playerTurn={playerTurn}
-                  timer={gameData.timer}
-                />
-                <HistoryContainer
-                  currentPlayer={currentPlayer}
-                  players={playersWithoutCurrent}
-                  playerTurn={playerTurn}
-                />
-                <GuessCharacterModal
-                  active={active}
-                  onSubmit={onSubmitGuess}
-                  onCancel={() => setActive(false)}
-                />
-              </ModalContext.Provider>
-            </div>
-          </>
-        ) : (
-          <Spinner appearance="invert" />
-        )}
-      </ScreenWrapper>
-    )
+    <ScreenWrapper className="lobby-screen">
+      {currentPlayer ? (
+        <>
+          <Header type="play-game" />
+          <div className="lobby-screen__content_wrapper">
+            <ModalContext.Provider value={[active, setActive]}>
+              <UsersContainer
+                currentPlayer={currentPlayer}
+                players={playersWithoutCurrent}
+                timer={gameData.timer || playerTurn?.question ? 20 : 60}
+                onTimerFinish={onTimerFinish}
+              />
+              <HistoryContainer
+                currentPlayer={currentPlayer}
+                players={playersWithoutCurrent}
+                playerTurn={playerTurn}
+              />
+              <GuessCharacterModal
+                active={active}
+                onSubmit={onSubmitGuess}
+                onCancel={() => setActive(false)}
+              />
+            </ModalContext.Provider>
+          </div>
+        </>
+      ) : (
+        <Spinner appearance="invert" />
+      )}
+    </ScreenWrapper>
   );
 }
 

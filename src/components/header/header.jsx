@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { useCallback, useContext, useState } from 'react';
 import './header.scss';
 import CreateNewLobbyModal from '../modals/create-new-lobby';
-import { GAME_LOBBY, INACTIVE } from '../../constants/constants';
+import { GAME_LOBBY } from '../../constants/constants';
 import { useNavigate } from 'react-router-dom';
 import GameDataContext from '../../contexts/game-data-context';
 
@@ -23,7 +23,7 @@ function Header({ className, type, lobby, startGame, timer }) {
   };
 
   const onTimerFinish = useCallback(async () => {
-    navigate(INACTIVE);
+    navigate('/');
     await leaveGame();
   }, [leaveGame, navigate]);
 

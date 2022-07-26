@@ -1,12 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import CountdownTimer from '../timer/timer-countdown/timer-countdown';
 import Btn from '../btn/btn';
 import checkGuess from '../../helper-functions/check-guess.js';
 import './modal.scss';
 import ModalWrapper from './modal-wrapper';
+import { useCallback } from 'react';
+import { leaveGame } from '../../services/games-service';
+import { INACTIVE } from '../../constants/constants';
+import GameDataContext from '../../contexts/game-data-context';
+import { useNavigate } from 'react-router-dom';
 
-function GuessCharacterModal({ active, onSubmit, onCancel, onTimerFinish }) {
+function GuessCharacterModal({ active, onSubmit, onCancel }) {
+  const { gameData, resetData, playerId } = useContext(GameDataContext);
   const [guess, setGuess] = useState('');
+  const navigate = useNavigate();
+
+  const onTimerFinish = useCallback(async () => {
+    try {
+      await leaveGame(playerId, gameData.id);
+      resetData();
+      navigate(INACTIVE);
+    } catch {
+      resetData();
+      navigate(INACTIVE);
+    }
+  }, [playerId, gameData.id, resetData, navigate]);
 
   useEffect(() => {
     return () => setGuess('');

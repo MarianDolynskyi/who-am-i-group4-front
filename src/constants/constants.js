@@ -12,7 +12,7 @@ const ASKED = 'ASKED';
 const ANSWERING = 'ANSWERING';
 const ANSWERED = 'ANSWERED';
 const GUESSING = 'GUESSING';
-const GUESSED = 'GUESSED';
+const ANSWER_GUESS = 'ANSWER_GUESS';
 const FINISHED = 'FINISHED';
 const YES = 'YES';
 const NO = 'NO';
@@ -67,7 +67,7 @@ export {
   ANSWERING,
   ANSWERED,
   GUESSING,
-  GUESSED,
+  ANSWER_GUESS,
   FINISHED,
   YES,
   NO,
