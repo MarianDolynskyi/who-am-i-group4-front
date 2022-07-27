@@ -2,11 +2,13 @@ import clsx from 'clsx';
 import AnswerIcon from '../answer-icon/answer-icon';
 import './history-item.scss';
 
-function HistoryItem({ avatar, question, answers, guess }) {
+function HistoryItem({ avatar, question, answers, guess, myGuess }) {
   return (
     <div className="history-item">
       <div className={clsx('history-item__question', guess)}>
-        {guess && <span className="my-guess">My guess</span>}
+        {!!guess && (
+          <span className="my-guess">{myGuess ? 'My guess' : 'Guess'}</span>
+        )}
         <div className={clsx('history-item__avatar', avatar)}></div>
         <p>{question}</p>
       </div>

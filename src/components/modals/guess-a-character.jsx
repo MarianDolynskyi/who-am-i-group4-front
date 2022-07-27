@@ -17,9 +17,9 @@ function GuessCharacterModal({ active, onSubmit, onCancel, timer, setTimer }) {
 
   const onTimerFinish = useCallback(async () => {
     try {
-      await leaveGame(playerId, gameData.id);
       resetData();
       navigate(INACTIVE);
+      await leaveGame(playerId, gameData.id);
     } catch {
       resetData();
       navigate(INACTIVE);
@@ -40,7 +40,7 @@ function GuessCharacterModal({ active, onSubmit, onCancel, timer, setTimer }) {
         <div className="modal__timer-container">
           <p className="modal__timer-container_name">TIME LEFT</p>
           <CountdownTimer
-            time={timer}
+            time={timer || 60}
             setTime={setTimer}
             inLobby={'in-lobby'}
             small={'v-small'}
