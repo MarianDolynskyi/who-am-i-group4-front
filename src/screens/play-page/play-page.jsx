@@ -7,36 +7,33 @@ import ModalContext from '../../contexts/modal-context';
 import './play-page.scss';
 import ScreenWrapper from '../../components/wrappers/screen-wrapper/screen-wrapper';
 import Spinner from '@atlaskit/spinner';
-import { askGuess, leaveGame } from '../../services/games-service';
+import { askGuess } from '../../services/games-service';
 import GameDataContext from '../../contexts/game-data-context';
 import useGameData from '../../hooks/useGameData';
 import usePlayers from '../../hooks/usePlayers';
-import {
-  ANSWERING,
-  ANSWER_GUESS,
-  ASKING,
-  INACTIVE,
-} from '../../constants/constants';
-import { useNavigate } from 'react-router-dom';
+import { ANSWERING, ANSWER_GUESS, ASKING } from '../../constants/constants';
 
 function PlayPage() {
-  const { gameData, resetData, playerId } = useContext(GameDataContext);
+  const { gameData, playerId } = useContext(GameDataContext);
   const [active, setActive] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useGameData();
   const { currentPlayer, playersWithoutCurrent, playerTurn } = usePlayers();
+  const [timer, setTimer] = useState(
+    gameData.timer || playerTurn?.question ? 20 : 60
+  );
 
-  const makePlayerInactive = useCallback(async () => {
-    try {
-      await leaveGame(playerId, gameData.id);
-      resetData();
-      navigate(INACTIVE);
-    } catch {
-      resetData();
-      navigate(INACTIVE);
-    }
-  }, [playerId, gameData.id, resetData, navigate]);
+  // const makePlayerInactive = useCallback(async () => {
+  //   try {
+  //     await leaveGame(playerId, gameData.id);
+  //     resetData();
+  //     navigate(INACTIVE);
+  //   } catch {
+  //     resetData();
+  //     navigate(INACTIVE);
+  //   }
+  // }, [playerId, gameData.id, resetData, navigate]);
 
   const onSubmitGuess = useCallback(
     async (event, guess) => {
@@ -68,13 +65,13 @@ function PlayPage() {
       return;
     }
 
-    makePlayerInactive();
+    // makePlayerInactive();
   }, [
     currentPlayer?.answer,
     currentPlayer?.question,
     currentPlayer?.state,
     playersWithoutCurrent,
-    makePlayerInactive,
+    // makePlayerInactive,
   ]);
 
   return (
@@ -87,7 +84,8 @@ function PlayPage() {
               <UsersContainer
                 currentPlayer={currentPlayer}
                 players={playersWithoutCurrent}
-                timer={gameData.timer || playerTurn?.question ? 20 : 60}
+                timer={timer}
+                setTimer={setTimer}
                 onTimerFinish={onTimerFinish}
               />
               <HistoryContainer
@@ -99,6 +97,8 @@ function PlayPage() {
                 active={active}
                 onSubmit={onSubmitGuess}
                 onCancel={() => setActive(false)}
+                timer={timer}
+                setTimer={setTimer}
               />
             </ModalContext.Provider>
           </div>

@@ -115,10 +115,10 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
   }, [lastHistoryItemAnswersLength, answersLength, fetchHistory]);
 
   useEffect(() => {
-    if (playerTurn.state !== ANSWER_GUESS) {
+    if (playerTurn?.state !== ANSWER_GUESS) {
       setAnswer('');
     }
-  }, [playerTurn.state]);
+  }, [playerTurn?.state]);
 
   const submitAsk = useCallback(
     async (question) => {

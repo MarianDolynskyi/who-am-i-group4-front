@@ -10,7 +10,7 @@ import { INACTIVE } from '../../constants/constants';
 import GameDataContext from '../../contexts/game-data-context';
 import { useNavigate } from 'react-router-dom';
 
-function GuessCharacterModal({ active, onSubmit, onCancel }) {
+function GuessCharacterModal({ active, onSubmit, onCancel, timer, setTimer }) {
   const { gameData, resetData, playerId } = useContext(GameDataContext);
   const [guess, setGuess] = useState('');
   const navigate = useNavigate();
@@ -40,7 +40,8 @@ function GuessCharacterModal({ active, onSubmit, onCancel }) {
         <div className="modal__timer-container">
           <p className="modal__timer-container_name">TIME LEFT</p>
           <CountdownTimer
-            time={60}
+            time={timer}
+            setTime={setTimer}
             inLobby={'in-lobby'}
             small={'v-small'}
             onFinish={onTimerFinish}
