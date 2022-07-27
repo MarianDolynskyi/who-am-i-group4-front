@@ -150,7 +150,7 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
   );
 
   return (
-    console.log(playerTurn, 'MODE', mode),
+    console.log(mode, gameData.players),
     (
       <div className="history">
         <div className="history_list">
