@@ -21,30 +21,32 @@ function UsersContainer({ currentPlayer, players, timer, setTimer }) {
           />
         )}
       </div>
-      {currentPlayer &&
-        currentPlayer.state !== INACTIVE &&
-        currentPlayer.state !== WINNER &&
-        currentPlayer.state !== LOOSER && (
-          <PlayerCard
-            className="in-users-container"
-            avatarClassName={currentPlayer.avatar}
-            name={currentPlayer.player.name}
-            isYou
-          />
-        )}
+      {currentPlayer && (
+        <PlayerCard
+          className="in-users-container"
+          avatarClassName={currentPlayer.avatar}
+          name={currentPlayer.player.name}
+          isYou
+        />
+      )}
       <hr />
       <div className="users__list">
         {players ? (
-          players.map((player) => (
-            <PlayerCard
-              className="in-users-container"
-              key={player.player.id}
-              name={player.player.name}
-              avatarClassName={player.avatar}
-              assignedCharacter={player.player.character}
-              leaving={player.isLeaving}
-            />
-          ))
+          players.map(
+            (player) =>
+              player.state !== WINNER &&
+              player.state !== LOOSER &&
+              player.state !== INACTIVE && (
+                <PlayerCard
+                  className="in-users-container"
+                  key={player.player.id}
+                  name={player.player.name}
+                  avatarClassName={player.avatar}
+                  assignedCharacter={player.player.character}
+                  leaving={player.isLeaving}
+                />
+              )
+          )
         ) : (
           <h1>Something went wrong</h1>
         )}
