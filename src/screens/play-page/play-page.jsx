@@ -11,7 +11,6 @@ import { askGuess } from '../../services/games-service';
 import GameDataContext from '../../contexts/game-data-context';
 import useGameData from '../../hooks/useGameData';
 import usePlayers from '../../hooks/usePlayers';
-import { ANSWERING, ANSWERING_GUESS, ASKING } from '../../constants/constants';
 import { useEffect } from 'react';
 
 function PlayPage() {
@@ -53,68 +52,64 @@ function PlayPage() {
     [gameData.id, playerId]
   );
 
-  const onTimerFinish = useCallback(() => {
-    if (
-      currentPlayer?.state === ASKING &&
-      currentPlayer?.question &&
-      playersWithoutCurrent.some((p) => !p.answer)
-    ) {
-      return;
-    }
+  // const onTimerFinish = useCallback(() => {
+  //   if (
+  //     currentPlayer?.state === ASKING &&
+  //     currentPlayer?.question &&
+  //     playersWithoutCurrent.some((p) => !p.answer)
+  //   ) {
+  //     return;
+  //   }
 
-    if (
-      (currentPlayer?.state === ANSWERING ||
-        currentPlayer?.state === ANSWERING_GUESS) &&
-      (currentPlayer?.answer || currentPlayer?.question)
-    ) {
-      return;
-    }
+  //   if (
+  //     (currentPlayer?.state === ANSWERING ||
+  //       currentPlayer?.state === ANSWERING_GUESS) &&
+  //     (currentPlayer?.answer || currentPlayer?.question)
+  //   ) {
+  //     return;
+  //   }
 
-    // makePlayerInactive();
-  }, [
-    currentPlayer?.answer,
-    currentPlayer?.question,
-    currentPlayer?.state,
-    playersWithoutCurrent,
-    // makePlayerInactive,
-  ]);
+  //   makePlayerInactive();
+  // }, [
+  //   currentPlayer?.answer,
+  //   currentPlayer?.question,
+  //   currentPlayer?.state,
+  //   playersWithoutCurrent,
+  //   makePlayerInactive,
+  // ]);
 
   return (
-    console.log(currentPlayer?.state, playerTurn?.question),
-    (
-      <ScreenWrapper className="lobby-screen">
-        {currentPlayer ? (
-          <>
-            <Header type="play-game" />
-            <div className="lobby-screen__content_wrapper">
-              <ModalContext.Provider value={[active, setActive]}>
-                <UsersContainer
-                  currentPlayer={currentPlayer}
-                  players={playersWithoutCurrent}
-                  timer={timer}
-                  setTimer={setTimer}
-                  onTimerFinish={onTimerFinish}
-                />
-                <HistoryContainer
-                  currentPlayer={currentPlayer}
-                  players={playersWithoutCurrent}
-                  playerTurn={playerTurn}
-                />
-                <GuessCharacterModal
-                  active={active}
-                  onSubmit={onSubmitGuess}
-                  onCancel={() => setActive(false)}
-                  timer={timer}
-                  setTimer={setTimer}
-                />
-              </ModalContext.Provider>
-            </div>
-          </>
-        ) : (
-          <Spinner appearance="invert" />
-        )}
-      </ScreenWrapper>
-    )
+    // console.log(currentPlayer?.state, playerTurn?.question),
+    <ScreenWrapper className="lobby-screen">
+      {currentPlayer ? (
+        <>
+          <Header type="play-game" />
+          <div className="lobby-screen__content_wrapper">
+            <ModalContext.Provider value={[active, setActive]}>
+              <UsersContainer
+                currentPlayer={currentPlayer}
+                players={playersWithoutCurrent}
+                timer={timer}
+                setTimer={setTimer}
+              />
+              <HistoryContainer
+                currentPlayer={currentPlayer}
+                players={playersWithoutCurrent}
+                playerTurn={playerTurn}
+              />
+              <GuessCharacterModal
+                active={active}
+                onSubmit={onSubmitGuess}
+                onCancel={() => setActive(false)}
+                timer={timer}
+              />
+            </ModalContext.Provider>
+          </div>
+        </>
+      ) : (
+        <Spinner appearance="invert" />
+      )}
+    </ScreenWrapper>
   );
 }
 

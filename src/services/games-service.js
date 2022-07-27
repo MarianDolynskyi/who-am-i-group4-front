@@ -88,17 +88,6 @@ function askGuess(player, id, guess) {
   });
 }
 
-function answerGuess(player, id, answer) {
-  return axios({
-    method: 'post',
-    url: `/api/v1/games/${id}/guess/answer`,
-    headers: { 'X-Player': player },
-    params: {
-      answer,
-    },
-  });
-}
-
 function leaveGame(player, id) {
   return axios({
     method: 'delete',
@@ -133,7 +122,6 @@ export {
   askQuestion,
   answerQuestion,
   askGuess,
-  answerGuess,
   leaveGame,
   getHistory,
   inactivePlayer,
