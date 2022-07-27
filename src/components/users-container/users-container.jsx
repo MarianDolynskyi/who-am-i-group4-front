@@ -3,6 +3,7 @@ import PlayerCard from '../player-card/player-card';
 import ModalContext from '../../contexts/modal-context';
 import './users-container.scss';
 import { useContext } from 'react';
+import { INACTIVE, LOOSER, WINNER } from '../../constants/constants';
 
 function UsersContainer({ currentPlayer, players, timer, setTimer }) {
   const modalActive = useContext(ModalContext)[0];
@@ -20,14 +21,17 @@ function UsersContainer({ currentPlayer, players, timer, setTimer }) {
           />
         )}
       </div>
-      {currentPlayer && (
-        <PlayerCard
-          className="in-users-container"
-          avatarClassName={currentPlayer.avatar}
-          name={currentPlayer.player.name}
-          isYou
-        />
-      )}
+      {currentPlayer &&
+        currentPlayer.state !== INACTIVE &&
+        currentPlayer.state !== WINNER &&
+        currentPlayer.state !== LOOSER && (
+          <PlayerCard
+            className="in-users-container"
+            avatarClassName={currentPlayer.avatar}
+            name={currentPlayer.player.name}
+            isYou
+          />
+        )}
       <hr />
       <div className="users__list">
         {players ? (

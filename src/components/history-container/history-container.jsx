@@ -8,7 +8,6 @@ import {
   getHistory,
   askQuestion,
   answerQuestion,
-  answerGuess,
 } from '../../services/games-service';
 import {
   ASKING,
@@ -17,13 +16,10 @@ import {
   GUESSING,
   ANSWERING_GUESS,
   ANSWERED_GUESS,
-  NO,
-  RESPONSE,
   WAITING,
 } from '../../constants/constants';
-import { useContext } from 'react';
+import { useContext, useCallback } from 'react';
 import GameDataContext from '../../contexts/game-data-context';
-import { useCallback } from 'react';
 
 function HistoryContainer({ currentPlayer, players, playerTurn }) {
   const { gameData, playerId, fetchGame } = useContext(GameDataContext);
@@ -52,7 +48,6 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
       const { data } = await getHistory(playerId, gameData.id);
 
       if (data.length) {
-        console.log(data);
         const gameHistory = data.map((item) => {
           const playersAvatars = item.Players.map((player, index) => ({
             id: player,
@@ -183,11 +178,8 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
               disabled={loading}
             />
           )}
-          {mode === ANSWERED_GUESS && playerTurn.state === GUESSING && (
+          {mode === ANSWERED_GUESS && playerTurn?.state === GUESSING && (
             <MessageBlock mode={WAITING} message={answer} />
-          )}
-          {mode === GUESSING && gameData.wrong && (
-            <MessageBlock mode={RESPONSE} message={NO} />
           )}
         </div>
       </div>
