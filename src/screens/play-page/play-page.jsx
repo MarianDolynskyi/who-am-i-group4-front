@@ -16,7 +16,6 @@ import { useEffect } from 'react';
 function PlayPage() {
   const { gameData, playerId } = useContext(GameDataContext);
   const [active, setActive] = useState(false);
-  // const navigate = useNavigate();
 
   useGameData();
   const { currentPlayer, playersWithoutCurrent, playerTurn } = usePlayers();
@@ -26,7 +25,7 @@ function PlayPage() {
 
   useEffect(() => {
     setTimer(gameData.timer || playerTurn?.question ? 20 : 60);
-  }, [playerTurn?.question, gameData.timer]);
+  }, [playerTurn, gameData.timer]);
 
   // const makePlayerInactive = useCallback(async () => {
   //   try {
@@ -79,7 +78,6 @@ function PlayPage() {
   // ]);
 
   return (
-    // console.log(currentPlayer?.state, playerTurn?.question),
     <ScreenWrapper className="lobby-screen">
       {currentPlayer ? (
         <>

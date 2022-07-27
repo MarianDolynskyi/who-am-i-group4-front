@@ -1,13 +1,11 @@
 import { useContext, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  DEFEAT,
   LOADING,
   LOBBY,
   PLAY,
   PROCESSING_QUESTION,
   SUGGESTING_CHARACTERS,
-  VICTORY,
   WAITING_FOR_PLAYERS,
 } from '../constants/constants';
 import GameDataContext from '../contexts/game-data-context';
@@ -33,18 +31,6 @@ export default function useGameData() {
     if (!gameData.id && !sessionStorage.gameId) {
       resetData();
       navigate('/');
-
-      return;
-    }
-
-    if (gameData.winners && gameData.winners.length) {
-      const [winner] = gameData.winners;
-
-      if (winner.id === playerId) {
-        navigate(VICTORY);
-      } else {
-        navigate(DEFEAT);
-      }
 
       return;
     }

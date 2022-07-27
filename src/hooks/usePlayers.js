@@ -1,9 +1,21 @@
 import { useContext, useEffect } from 'react';
-import { ASKED, ASKING, GUESSING } from '../constants/constants';
+import {
+  ASKED,
+  ASKING,
+  DEFEAT,
+  GUESSING,
+  INACTIVE,
+  INACTIVE_USER,
+  LOOSER,
+  VICTORY,
+  WINNER,
+} from '../constants/constants';
 import GameDataContext from '../contexts/game-data-context';
+import { useNavigate } from 'react-router-dom';
 
 export default function usePlayers() {
   const { gameData, playerId } = useContext(GameDataContext);
+  const navigate = useNavigate();
 
   const currentPlayer = gameData.players.find(
     (player) => player.player.id === playerId
@@ -26,6 +38,18 @@ export default function usePlayers() {
 
       if (player.player.id === playerId) {
         obj.currentPlayer = player;
+
+        if (obj.currentPlayer.state === INACTIVE_USER) {
+          navigate(INACTIVE);
+        }
+
+        if (obj.currentPlayer.state === WINNER) {
+          navigate(VICTORY);
+        }
+
+        if (obj.currentPlayer.state === LOOSER) {
+          navigate(DEFEAT);
+        }
 
         return obj;
       }
