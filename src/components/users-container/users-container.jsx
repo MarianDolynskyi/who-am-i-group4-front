@@ -4,7 +4,7 @@ import ModalContext from '../../contexts/modal-context';
 import './users-container.scss';
 import { useContext } from 'react';
 
-function UsersContainer({ currentPlayer, players, timer, onTimerFinish }) {
+function UsersContainer({ currentPlayer, players, timer, setTimer }) {
   const modalActive = useContext(ModalContext)[0];
 
   return (
@@ -15,8 +15,8 @@ function UsersContainer({ currentPlayer, players, timer, onTimerFinish }) {
           <CountdownTimer
             small={'v-small'}
             time={timer}
+            setTime={setTimer}
             paused={modalActive}
-            onFinish={onTimerFinish}
           />
         )}
       </div>

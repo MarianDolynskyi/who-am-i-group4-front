@@ -11,7 +11,7 @@ import { askGuess } from '../../services/games-service';
 import GameDataContext from '../../contexts/game-data-context';
 import useGameData from '../../hooks/useGameData';
 import usePlayers from '../../hooks/usePlayers';
-import { ANSWERING, ANSWER_GUESS, ASKING } from '../../constants/constants';
+import { useEffect } from 'react';
 
 function PlayPage() {
   const { gameData, playerId } = useContext(GameDataContext);
@@ -20,6 +20,13 @@ function PlayPage() {
 
   useGameData();
   const { currentPlayer, playersWithoutCurrent, playerTurn } = usePlayers();
+  const [timer, setTimer] = useState(
+    gameData.timer || playerTurn?.question ? 20 : 60
+  );
+
+  useEffect(() => {
+    setTimer(gameData.timer || playerTurn?.question ? 20 : 60);
+  }, [playerTurn?.question, gameData.timer]);
 
   // const makePlayerInactive = useCallback(async () => {
   //   try {
@@ -45,33 +52,34 @@ function PlayPage() {
     [gameData.id, playerId]
   );
 
-  const onTimerFinish = useCallback(() => {
-    if (
-      currentPlayer?.state === ASKING &&
-      currentPlayer?.question &&
-      playersWithoutCurrent.some((p) => !p.answer)
-    ) {
-      return;
-    }
+  // const onTimerFinish = useCallback(() => {
+  //   if (
+  //     currentPlayer?.state === ASKING &&
+  //     currentPlayer?.question &&
+  //     playersWithoutCurrent.some((p) => !p.answer)
+  //   ) {
+  //     return;
+  //   }
 
-    if (
-      (currentPlayer?.state === ANSWERING ||
-        currentPlayer?.state === ANSWER_GUESS) &&
-      (currentPlayer?.answer || currentPlayer?.question)
-    ) {
-      return;
-    }
+  //   if (
+  //     (currentPlayer?.state === ANSWERING ||
+  //       currentPlayer?.state === ANSWERING_GUESS) &&
+  //     (currentPlayer?.answer || currentPlayer?.question)
+  //   ) {
+  //     return;
+  //   }
 
-    // makePlayerInactive();
-  }, [
-    currentPlayer?.answer,
-    currentPlayer?.question,
-    currentPlayer?.state,
-    playersWithoutCurrent,
-    // makePlayerInactive,
-  ]);
+  //   makePlayerInactive();
+  // }, [
+  //   currentPlayer?.answer,
+  //   currentPlayer?.question,
+  //   currentPlayer?.state,
+  //   playersWithoutCurrent,
+  //   makePlayerInactive,
+  // ]);
 
   return (
+    // console.log(currentPlayer?.state, playerTurn?.question),
     <ScreenWrapper className="lobby-screen">
       {currentPlayer ? (
         <>
@@ -81,8 +89,8 @@ function PlayPage() {
               <UsersContainer
                 currentPlayer={currentPlayer}
                 players={playersWithoutCurrent}
-                timer={gameData.timer || playerTurn?.question ? 20 : 60}
-                onTimerFinish={onTimerFinish}
+                timer={timer}
+                setTimer={setTimer}
               />
               <HistoryContainer
                 currentPlayer={currentPlayer}
@@ -93,6 +101,7 @@ function PlayPage() {
                 active={active}
                 onSubmit={onSubmitGuess}
                 onCancel={() => setActive(false)}
+                timer={timer}
               />
             </ModalContext.Provider>
           </div>

@@ -11,15 +11,24 @@ function CountdownTimer({
   timeClassName,
   paused,
   onFinish,
+  setTime,
 }) {
   const [seconds, setSeconds] = useState(time);
+
+  useEffect(() => {
+    if (paused) {
+      setTime && setTime(seconds);
+
+      return;
+    }
+  }, [paused, setTime, seconds]);
 
   useEffect(() => {
     setSeconds(time);
   }, [time]);
 
   useTimer(() => {
-    if (paused || seconds === 0) {
+    if (seconds === 0) {
       return;
     }
 
@@ -31,9 +40,9 @@ function CountdownTimer({
       if (onFinish) {
         onFinish();
       }
-      setSeconds(time);
+      // setSeconds(time);
     }
-  }, [onFinish, seconds, time]);
+  }, [onFinish, seconds, time, setTime]);
 
   return (
     <div className="timer">
