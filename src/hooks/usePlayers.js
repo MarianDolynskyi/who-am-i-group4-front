@@ -3,6 +3,7 @@ import {
   ASKED,
   ASKING,
   DEFEAT,
+  GUESSED,
   GUESSING,
   INACTIVE,
   INACTIVE_USER,
@@ -36,7 +37,8 @@ export default function usePlayers() {
       if (
         player.state === ASKING ||
         player.state === ASKED ||
-        player.state === GUESSING
+        player.state === GUESSING ||
+        player.state === GUESSED
       ) {
         obj.playerTurn = player;
       }

@@ -11,7 +11,10 @@ function Victory() {
   return (
     <ScreenWrapper>
       <GameTitle />
-      <PlayerCard avatarClassName={'avatar01'} name={'GreenDean'} />
+      <PlayerCard
+        avatarClassName={sessionStorage.getItem('avatar')}
+        name={sessionStorage.getItem('name')}
+      />
       <h3 className="victory-screen-message">
         CONGRATULATIONS. YOU HAVE WON THE GAME
       </h3>
