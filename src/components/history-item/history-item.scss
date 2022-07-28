@@ -9,6 +9,11 @@
   padding: 24px;
   background-color: $primary-background-blue;
   border-radius: 16px;
+  opacity: 50%;
+
+  &:nth-last-child(2) {
+    opacity: 100%;
+  }
 
   &__question {
     font-style: normal;

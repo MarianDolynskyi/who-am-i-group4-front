@@ -20,7 +20,7 @@
     gap: 32px;
     overflow-y: auto;
 
-    .history_item:not(:nth-last-child(2)) {
+    .history_item {
       opacity: 50%;
     }
   }

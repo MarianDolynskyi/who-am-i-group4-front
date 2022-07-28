@@ -46,17 +46,17 @@ export default function usePlayers() {
       if (player.player.id === playerId) {
         obj.currentPlayer = player;
 
-        if (obj.currentPlayer.state === INACTIVE_USER) {
-          navigate(INACTIVE);
-        }
+        // if (obj.currentPlayer.state === INACTIVE_USER) {
+        //   navigate(INACTIVE);
+        // }
 
-        if (obj.currentPlayer.state === WINNER) {
-          navigate(VICTORY);
-        }
+        // if (obj.currentPlayer.state === WINNER) {
+        //   navigate(VICTORY);
+        // }
 
-        if (obj.currentPlayer.state === LOOSER) {
-          navigate(DEFEAT);
-        }
+        // if (obj.currentPlayer.state === LOOSER) {
+        //   navigate(DEFEAT);
+        // }
 
         return obj;
       }
