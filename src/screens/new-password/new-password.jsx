@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import InputPassword from '../../components/Input/InputPassword';
 import { sendPass } from '../../services/users-service';
-import { SIGN_IN } from '../../constants/constants';
+import { SIGN_IN, RGX_PASS } from '../../constants/constants';
 
 function NewPassword() {
   const navigate = useNavigate();
@@ -20,8 +20,7 @@ function NewPassword() {
     setRePassword(e.target.value);
   };
 
-  const formIsValid =
-    password.length >= 8 && password.length < 20 && password === rePassword;
+  const formIsValid = RGX_PASS.test(password) && password === rePassword;
 
   const submitHandler = async (e) => {
     e.preventDefault();

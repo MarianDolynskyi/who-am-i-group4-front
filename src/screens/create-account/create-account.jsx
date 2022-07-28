@@ -6,13 +6,20 @@ import Btn from '../../components/btn/btn';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { registrationUser } from '../../services/users-service';
-import { SIGN_IN } from '../../constants/constants';
+import {
+  SIGN_IN,
+  RGX_PASS,
+  RGX_USERNAME,
+  RGX_EMAIL,
+} from '../../constants/constants';
+import './create-account.scss';
 
 function CreateAccount() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const usernameHandler = (e) => {
     setUsername(e.target.value);
@@ -27,17 +34,24 @@ function CreateAccount() {
   };
 
   const formIsValid =
-    password.length >= 8 &&
-    email.length > 3 &&
+    RGX_PASS.test(password) &&
+    RGX_EMAIL.test(email) &&
+    !RGX_USERNAME.test(username) &&
+    email.length >= 3 &&
+    email.length < 256 &&
     username.length >= 2 &&
-    username.length < 50;
+    username.length < 51;
 
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
       await registrationUser(username, email, password);
       navigate(SIGN_IN);
+      setError('');
     } catch (error) {
+      if (error.request?.status === 400) {
+        setError('This email is already used');
+      }
       alert(error);
     }
   };
@@ -59,7 +73,9 @@ function CreateAccount() {
           value={email}
           onChange={(e) => emailHandler(e)}
           placeholder="Email"
+          className={error && 'error'}
         />
+        {error && <p className="error-message">{error}</p>}
         <InputPassword
           name="password"
           value={password}
@@ -71,6 +87,7 @@ function CreateAccount() {
             className={'btn-pink-solid'}
             onClick={() => {
               navigate('/');
+              setError('');
             }}
           >
             Cancel
