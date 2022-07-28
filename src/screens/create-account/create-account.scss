@@ -1,0 +1,14 @@
+@import '../../styles/colors';
+@import '../../styles/mixins';
+
+.error-message {
+  margin-top: -24px;
+  padding-left: 35px;
+  color: $btn-pink;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.error {
+  border: 4px solid $btn-pink;
+}

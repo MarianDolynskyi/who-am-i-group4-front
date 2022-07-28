@@ -39,6 +39,11 @@ const NEW_PASSWORD = '/new-password';
 const PROFILE = '/profile';
 const REDIRECT = '/email-redirect';
 
+const RGX_PASS =
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$/;
+const RGX_USERNAME = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]$/;
+const RGX_EMAIL = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
 const THEME_FILTER = [
   { title: 'Actors', checked: false },
   { title: 'Astronauts', checked: false },
@@ -100,4 +105,7 @@ export {
   NEW_PASSWORD,
   PROFILE,
   REDIRECT,
+  RGX_PASS,
+  RGX_USERNAME,
+  RGX_EMAIL,
 };
