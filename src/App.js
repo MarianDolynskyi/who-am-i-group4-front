@@ -70,7 +70,7 @@ function App() {
         if (data.players.length) {
           const players = data.players.map((player, index) => ({
             ...player,
-            avatar: `avatar0${index + 1}`,
+            avatar: player.avatar || `avatar0${index + 1}`,
             nickname: player.player.name || `Player ${index + 1}`,
           }));
           setGameData(() => ({

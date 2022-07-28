@@ -11,17 +11,8 @@ function CountdownTimer({
   timeClassName,
   paused,
   onFinish,
-  setTime,
 }) {
   const [seconds, setSeconds] = useState(time);
-
-  useEffect(() => {
-    if (paused) {
-      setTime && setTime(seconds);
-
-      return;
-    }
-  }, [paused, setTime, seconds]);
 
   useEffect(() => {
     setSeconds(time);
@@ -42,7 +33,7 @@ function CountdownTimer({
       }
       // setSeconds(time);
     }
-  }, [onFinish, seconds, time, setTime]);
+  }, [onFinish, seconds]);
 
   return (
     <div className="timer">

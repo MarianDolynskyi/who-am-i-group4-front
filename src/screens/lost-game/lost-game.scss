@@ -5,8 +5,15 @@
   font-weight: 900;
   color: $btn-pink;
   max-width: 753px;
-  line-height: 45px;
-  margin-bottom: 56px;
+  line-height: 29px;
+  margin-bottom: 45px;
+
+  p {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .lost-game-screen-message-character {
@@ -15,6 +22,6 @@
   color: $primary-background-blue;
   background-color: $modals-background;
   padding: 16px 32px 16px 32px;
-  border-radius: 30px;
-  margin: 5px;
+  border-radius: 200px;
+  margin: 8px 10px;
 }

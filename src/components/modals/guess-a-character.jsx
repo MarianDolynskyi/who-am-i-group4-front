@@ -6,20 +6,7 @@ import './modal.scss';
 import ModalWrapper from './modal-wrapper';
 
 function GuessCharacterModal({ active, onSubmit, onCancel, timer }) {
-  // const { gameData, resetData, playerId } = useContext(GameDataContext);
   const [guess, setGuess] = useState('');
-  // const navigate = useNavigate();
-
-  // const onTimerFinish = useCallback(async () => {
-  //   try {
-  //     resetData();
-  //     navigate(INACTIVE);
-  //     await leaveGame(playerId, gameData.id);
-  //   } catch {
-  //     resetData();
-  //     navigate(INACTIVE);
-  //   }
-  // }, [playerId, gameData.id, resetData, navigate]);
 
   useEffect(() => {
     return () => setGuess('');
