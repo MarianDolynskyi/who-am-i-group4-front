@@ -34,38 +34,35 @@ function PlayPage() {
   );
 
   return (
-    console.log(playerTurn.question),
-    (
-      <ScreenWrapper className="lobby-screen">
-        {currentPlayer ? (
-          <>
-            <Header type="play-game" />
-            <div className="lobby-screen__content_wrapper">
-              <ModalContext.Provider value={[active, setActive]}>
-                <UsersContainer
-                  currentPlayer={currentPlayer}
-                  players={playersWithoutCurrent}
-                  timer={timer}
-                />
-                <HistoryContainer
-                  currentPlayer={currentPlayer}
-                  players={playersWithoutCurrent}
-                  playerTurn={playerTurn}
-                />
-                <GuessCharacterModal
-                  active={active}
-                  onSubmit={onSubmitGuess}
-                  onCancel={() => setActive(false)}
-                  timer={timer}
-                />
-              </ModalContext.Provider>
-            </div>
-          </>
-        ) : (
-          <Spinner appearance="invert" />
-        )}
-      </ScreenWrapper>
-    )
+    <ScreenWrapper className="lobby-screen">
+      {currentPlayer ? (
+        <>
+          <Header type="play-game" />
+          <div className="lobby-screen__content_wrapper">
+            <ModalContext.Provider value={[active, setActive]}>
+              <UsersContainer
+                currentPlayer={currentPlayer}
+                players={playersWithoutCurrent}
+                timer={timer}
+              />
+              <HistoryContainer
+                currentPlayer={currentPlayer}
+                players={playersWithoutCurrent}
+                playerTurn={playerTurn}
+              />
+              <GuessCharacterModal
+                active={active}
+                onSubmit={onSubmitGuess}
+                onCancel={() => setActive(false)}
+                timer={timer}
+              />
+            </ModalContext.Provider>
+          </div>
+        </>
+      ) : (
+        <Spinner appearance="invert" />
+      )}
+    </ScreenWrapper>
   );
 }
 

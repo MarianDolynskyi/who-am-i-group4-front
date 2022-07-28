@@ -169,9 +169,14 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
         {mode === ASKING && (
           <QuestionForm onSubmit={submitAsk} disabled={loading} />
         )}
-        {(mode === ANSWERING || mode === ANSWERING_GUESS) && (
-          <AnswerForm mode={mode} onSubmit={submitAnswer} disabled={loading} />
-        )}
+        {(mode === ANSWERING || mode === ANSWERING_GUESS) &&
+          playerTurn.question && (
+            <AnswerForm
+              mode={mode}
+              onSubmit={submitAnswer}
+              disabled={loading}
+            />
+          )}
         {mode === ANSWERED_GUESS && playerTurn?.state === GUESSING && (
           <MessageBlock mode={WAITING} message={answer} />
         )}
