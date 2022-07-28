@@ -34,7 +34,7 @@ function PlayPage() {
   );
 
   return (
-    // console.log('PLAY', gameData.players),
+    // console.log('PLAY', currentPlayer.state),
     <ScreenWrapper className="lobby-screen">
       {currentPlayer ? (
         <>

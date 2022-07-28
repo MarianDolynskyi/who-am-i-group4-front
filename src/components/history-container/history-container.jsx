@@ -38,7 +38,7 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
       behavior: 'auto',
       block: 'end',
     });
-  }, [history.length]);
+  }, [history]);
 
   const fetchHistory = useCallback(
     async function () {

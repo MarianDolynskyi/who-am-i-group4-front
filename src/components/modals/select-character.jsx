@@ -33,7 +33,7 @@ function SelectCharacterModal({
   }
 
   return (
-    <ModalWrapper title="SUGGEST A CHARACTER" onCancel={onCancel}>
+    <ModalWrapper title="BEFORE WE START" onCancel={onCancel}>
       <form
         className="modal-form"
         onSubmit={(event) => onSubmit(event, playerName, characterName)}
@@ -41,6 +41,7 @@ function SelectCharacterModal({
         <input
           className="modal__input-field"
           type="text"
+          placeholder="Enter your nickname"
           maxLength="50"
           value={playerName}
           onInput={(e) => {
@@ -61,7 +62,7 @@ function SelectCharacterModal({
           className="btn-green-solid"
           disabled={
             submitting ||
-            (playerName && playerName.trim().length < 2) ||
+            playerName?.trim().length < 2 ||
             characterName.trim().length < 2
           }
           type="submit"
