@@ -1,25 +1,16 @@
 import CountdownTimer from '../timer/timer-countdown/timer-countdown';
 import PlayerCard from '../player-card/player-card';
-import ModalContext from '../../contexts/modal-context';
 import './users-container.scss';
-import { useContext } from 'react';
 import { INACTIVE, LOOSER, WINNER } from '../../constants/constants';
 
-function UsersContainer({ currentPlayer, players, timer, setTimer }) {
-  const modalActive = useContext(ModalContext)[0];
+function UsersContainer({ currentPlayer, players, timer }) {
+  // const modalActive = useContext(ModalContext)[0];
 
   return (
     <div className="users">
       <div className="users__timer-container">
         <p className="users__turn">TURN TIME</p>
-        {!!timer && (
-          <CountdownTimer
-            small={'v-small'}
-            time={timer}
-            setTime={setTimer}
-            paused={modalActive}
-          />
-        )}
+        {!!timer && <CountdownTimer small={'v-small'} time={timer} />}
       </div>
       {currentPlayer && (
         <PlayerCard

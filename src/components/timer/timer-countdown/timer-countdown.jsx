@@ -9,7 +9,6 @@ function CountdownTimer({
   time = 60,
   small,
   timeClassName,
-  paused,
   onFinish,
 }) {
   const [seconds, setSeconds] = useState(time);

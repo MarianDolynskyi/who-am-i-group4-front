@@ -37,6 +37,7 @@ function Lobby() {
   );
 
   return (
+    // console.log('LOBBY', gameData.players),
     <ScreenWrapper>
       <div className="input-screen">
         {currentPlayer && currentPlayer.nickname ? (

@@ -68,11 +68,21 @@ function App() {
         const { data } = await findGameById(userId, gameId);
 
         if (data.players.length) {
-          const players = data.players.map((player, index) => ({
-            ...player,
-            avatar: player.avatar || `avatar0${index + 1}`,
-            nickname: player.player.name || `Player ${index + 1}`,
-          }));
+          const players = data.players.map((player, index) => {
+            let avatar = `avatar0${index + 1}`;
+
+            if (gameData.players.length >= data.players.length) {
+              avatar = gameData.players.find(
+                (user) => user.player.id === player.player.id
+              )?.avatar;
+            }
+
+            return {
+              ...player,
+              avatar,
+              nickname: player.player.name || `Player ${index + 1}`,
+            };
+          });
           setGameData(() => ({
             ...data,
             players,
