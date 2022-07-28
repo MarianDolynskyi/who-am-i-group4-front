@@ -95,7 +95,7 @@ function App() {
         }
       }
     }
-  }, [gameData.id, navigate, playerId, resetData]);
+  }, [gameData.id, navigate, playerId, resetData, gameData.players]);
 
   const leaveGame = useCallback(async () => {
     if (!gameData.id) {

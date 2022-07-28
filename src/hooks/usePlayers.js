@@ -1,22 +1,9 @@
 import { useContext, useEffect } from 'react';
-import {
-  ASKED,
-  ASKING,
-  DEFEAT,
-  GUESSED,
-  GUESSING,
-  INACTIVE,
-  INACTIVE_USER,
-  LOOSER,
-  VICTORY,
-  WINNER,
-} from '../constants/constants';
+import { ASKED, ASKING, GUESSED, GUESSING } from '../constants/constants';
 import GameDataContext from '../contexts/game-data-context';
-import { useNavigate } from 'react-router-dom';
 
 export default function usePlayers() {
   const { gameData, playerId } = useContext(GameDataContext);
-  const navigate = useNavigate();
 
   const currentPlayer = gameData.players.find(
     (player) => player.player.id === playerId
