@@ -31,6 +31,7 @@ function SignIn() {
       authCtx.login(response.data.idToken);
       authCtx.changeUserName(response.data.userName);
       navigate('/');
+      reload();
     } catch (error) {
       alert(error);
     }
