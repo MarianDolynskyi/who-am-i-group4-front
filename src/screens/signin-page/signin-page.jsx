@@ -29,9 +29,9 @@ function SignIn() {
     try {
       const response = await authorisationUser(email, password);
       authCtx.login(response.data.idToken);
-      authCtx.changeUserName(response.data.userName);
+      authCtx.changeUserName(response.data.username);
       navigate('/');
-      reload();
+      window.location.reload();
     } catch (error) {
       alert(error);
     }
