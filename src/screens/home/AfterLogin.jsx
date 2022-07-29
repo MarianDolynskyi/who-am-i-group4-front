@@ -18,7 +18,7 @@ function AfterLogin() {
         <div className="profile__title">welcome</div>
         <div className="profile__body">
           <div className="profile__avatar"></div>
-          <div className="profile__name">GreenDean</div>
+          <div className="profile__name">{authCtx.username}</div>
           <div className="profile__edit-icon"></div>
         </div>
       </div>

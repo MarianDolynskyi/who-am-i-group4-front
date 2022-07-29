@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Btn from '../btn/btn';
 import ModalWrapper from './modal-wrapper';
 import './modal.scss';
+import useAuth from '../../hooks/useAuth';
 
 function SelectCharacterModal({
   player,
@@ -10,7 +11,8 @@ function SelectCharacterModal({
   onCancel,
   onSubmit: onSubmitProp,
 }) {
-  const [playerName, setPlayerName] = useState(player);
+  const { username, isLoggedIn } = useAuth();
+  const [playerName, setPlayerName] = useState(isLoggedIn ? username : player);
   const [characterName, setCharacterName] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
