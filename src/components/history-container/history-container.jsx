@@ -49,15 +49,13 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
 
       if (data.length) {
         const gameHistory = data.map((item) => {
-          const playersAvatars = item.Players.map((player, index) => ({
-            id: player,
-            avatar: `avatar0${index + 1}`,
-          }));
-          const user = playersAvatars.find(
+          const user = gameData.avatars.find(
             (player) => player.id === item.PlayerId
           );
-          const users = playersAvatars.filter(
-            (player) => player.id !== item.PlayerId
+          const users = gameData.avatars.filter(
+            (player) =>
+              player.id !== item.PlayerId &&
+              item.Players.find((id) => id === player.id)
           );
           const avatar = user?.avatar;
           const answers = users.map((user) => {
@@ -80,8 +78,20 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
         setHistory(gameHistory);
       }
     },
-    [playerId, gameData.id]
+    [playerId, gameData.id, gameData.avatars]
   );
+  // const promiseRef = useRef();
+
+  // useEffect(() => {
+  //   if (promiseRef.current && promiseRef.current.state === 'pending') {
+  //     return;
+  //   }
+  //   const checkStatus = setTimeout(async () => {
+  //     promiseRef.current = fetchHistory();
+  //   }, 1000);
+
+  //   return () => clearTimeout(checkStatus);
+  // });
 
   useEffect(() => {
     fetchHistory();
@@ -100,7 +110,7 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
   const answersLength = useMemo(
     () =>
       players.reduce((all, player) => {
-        if (player.state === ANSWERED) {
+        if (player.state === ANSWERED || player.state === ANSWERED_GUESS) {
           return all + 1;
         }
 
@@ -118,6 +128,10 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
   useEffect(() => {
     if (playerTurn?.state !== ANSWERING_GUESS) {
       setAnswer('');
+    }
+
+    if (playerTurn?.state === ASKING) {
+      setLoading(false);
     }
   }, [playerTurn?.state]);
 

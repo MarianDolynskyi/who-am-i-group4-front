@@ -27,6 +27,7 @@ import {
   NEW_PASSWORD,
   PROFILE,
   REDIRECT,
+  NUMBER_OF_PLAYERS,
 } from './constants/constants';
 import CreateAccount from './screens/create-account/create-account';
 import SignIn from './screens/signin-page/signin-page';
@@ -41,7 +42,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import EmailRedirect from './screens/email-redirect/email-redirect';
 
-const initialData = { status: null, players: [], winners: [] };
+const initialData = { status: null, players: [], winners: [], avatars: [] };
 
 function App() {
   const [gameData, setGameData] = useState(initialData);
@@ -68,34 +69,41 @@ function App() {
         const { data } = await findGameById(userId, gameId);
 
         if (data.players.length) {
+          let avatars = gameData.avatars || initialData.avatars;
+
+          if (
+            data.players.length === NUMBER_OF_PLAYERS &&
+            !gameData.avatars?.length
+          ) {
+            avatars = data.players.map((player, index) => ({
+              id: player.player.id,
+              avatar: `avatar0${index + 1}`,
+            }));
+          }
           const players = data.players.map((player, index) => {
-            let avatar = `avatar0${index + 1}`;
-
-            if (gameData.players.length >= data.players.length) {
-              avatar = gameData.players.find(
-                (user) => user.player.id === player.player.id
-              )?.avatar;
-            }
-
             return {
               ...player,
-              avatar,
+              avatar:
+                avatars.find((user) => user.id === player.player.id)?.avatar ||
+                `avatar0${index + 1}`,
               nickname: player.player.name || `Player ${index + 1}`,
             };
           });
+
           setGameData(() => ({
             ...data,
             players,
+            avatars,
           }));
         }
       } catch (error) {
-        if (error.response.status === 404) {
+        if (error.response?.status === 404) {
           resetData();
           navigate('/');
         }
       }
     }
-  }, [gameData.id, navigate, playerId, resetData, gameData.players]);
+  }, [gameData.id, navigate, playerId, resetData, gameData.avatars]);
 
   const leaveGame = useCallback(async () => {
     if (!gameData.id) {
