@@ -31,12 +31,11 @@ function SignIn() {
       authCtx.login(response.data.idToken);
       authCtx.changeUserName(response.data.userName);
       navigate('/');
-      reload();
+      window.location.reload();
     } catch (error) {
       alert(error);
     }
   };
-
 
   return (
     <ScreenWrapper>
@@ -64,9 +63,7 @@ function SignIn() {
           >
             Cancel
           </Btn>
-          <Btn type="submit">
-            sign in
-          </Btn>
+          <Btn type="submit">sign in</Btn>
         </div>
         <Link to={RESTORE} className="subtitle title-red">
           restore password
