@@ -31,13 +31,12 @@ function SignIn() {
       authCtx.login(response.data.idToken);
       authCtx.changeUserName(response.data.userName);
       navigate('/');
+      reload();
     } catch (error) {
       alert(error);
     }
   };
 
-  const formIsValid =
-    password.length >= 8 && password.length < 20 && email.length > 3;
 
   return (
     <ScreenWrapper>
@@ -65,7 +64,7 @@ function SignIn() {
           >
             Cancel
           </Btn>
-          <Btn disabled={!formIsValid} type="submit">
+          <Btn type="submit">
             sign in
           </Btn>
         </div>
