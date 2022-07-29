@@ -20,6 +20,7 @@ function CreateAccount() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const spaces = /\s/g
 
   const usernameHandler = (e) => {
     setUsername(e.target.value);
@@ -37,6 +38,7 @@ function CreateAccount() {
     RGX_PASS.test(password) &&
     RGX_EMAIL.test(email) &&
     !RGX_USERNAME.test(username) &&
+    !spaces.test(username) &&
     email.length >= 3 &&
     email.length < 256 &&
     username.length >= 2 &&
@@ -68,6 +70,7 @@ function CreateAccount() {
           placeholder="Username"
         />
         <Input
+          title="Enter your email address with the domain. Example: emailaddress@gmail.com"
           type="email"
           name="email"
           value={email}
@@ -77,6 +80,7 @@ function CreateAccount() {
         />
         {error && <p className="error-message">{error}</p>}
         <InputPassword
+          title="The password shall contain at least 8 symbols (max 127): min 1 upper-case, 1 lower-case letter, special symbol and number"
           name="password"
           value={password}
           onChange={(e) => passwordHandler(e)}
